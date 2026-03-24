@@ -1,0 +1,17 @@
+{
+  "name": "dieu-khac-platform",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "install:backend": "npm install --prefix backend",
+    "install:frontend": "npm install --prefix frontend",
+    "install:admin": "npm install --prefix admin",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend && npm install --prefix admin",
+    "dev": "bash -lc 'trap \"kill 0\" EXIT; npm --prefix backend run dev & npm --prefix frontend run dev & npm --prefix admin run dev & wait'",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:admin": "npm --prefix admin run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build && npm --prefix admin run build",
+    "seed": "npm --prefix backend run seed"
+  }
+}
