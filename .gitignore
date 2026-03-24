@@ -12,7 +12,6 @@ coverage/
 **/.env.*
 !.env.example
 !**/.env.example
-!deploy/.env.production.example
 !deploy/.env.ip.example
 
 .DS_Store

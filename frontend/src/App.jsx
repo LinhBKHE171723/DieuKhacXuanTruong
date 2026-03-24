@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { useEffect, useLayoutEffect } from "react";
+import { Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { Header } from "./components/common/Header";
 import { Footer } from "./components/common/Footer";
 import { LoadingScreen } from "./components/common/LoadingScreen";
@@ -17,6 +17,21 @@ import { ProjectsPage } from "./pages/ProjectsPage";
 function Layout() {
   const settingsQuery = useSiteSettings();
   const categoriesQuery = useProductCategories();
+  const { pathname } = useLocation();
+
+  useLayoutEffect(() => {
+    const html = document.documentElement;
+    const previousScrollBehavior = html.style.scrollBehavior;
+
+    html.style.scrollBehavior = "auto";
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    html.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    return () => {
+      html.style.scrollBehavior = previousScrollBehavior;
+    };
+  }, [pathname]);
 
   useEffect(() => {
     const faviconUrl = settingsQuery.data?.faviconUrl;
