@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: production-deploy
+  group: ip-deploy
   cancel-in-progress: true
 
 jobs:
@@ -68,4 +68,4 @@ jobs:
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
         run: |
-          ssh "${DEPLOY_USER}@${DEPLOY_HOST}" "cd '${DEPLOY_PATH}' && bash deploy/deploy.sh"
+          ssh "${DEPLOY_USER}@${DEPLOY_HOST}" "cd '${DEPLOY_PATH}' && git fetch --all --prune && git checkout main && git pull --ff-only origin main && bash deploy/deploy-ip.sh"

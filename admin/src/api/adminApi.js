@@ -38,11 +38,7 @@ export const adminApi = {
     const formData = new FormData();
     files.forEach((file) => formData.append("files", file));
     formData.append("folder", folder || "media");
-    return unwrap(
-      await client.post("/admin/media/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      })
-    );
+    return unwrap(await client.post("/admin/media/upload", formData));
   },
   deleteMedia: async (id) => unwrap(await client.delete(`/admin/media/${id}`)),
   getSettings: async () => unwrap(await client.get("/admin/settings")),

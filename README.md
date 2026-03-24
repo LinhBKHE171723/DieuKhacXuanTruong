@@ -166,6 +166,57 @@ cd admin && npm run build
 npm run build
 ```
 
+## Deploy nhanh bằng IP trước
+
+Truong hop chua tro domain, co the deploy bang IP server va tach admin sang port `8080`:
+
+- Public website: `http://SERVER_IP`
+- Admin: `http://SERVER_IP:8080`
+- API: `http://SERVER_IP/api`
+
+File lien quan:
+
+- [`deploy/Caddyfile.ip`](/mnt/c/Users/ASUS/Desktop/DieuKhac/deploy/Caddyfile.ip)
+- [`deploy/compose.ip.yml`](/mnt/c/Users/ASUS/Desktop/DieuKhac/deploy/compose.ip.yml)
+- [`deploy/.env.ip.example`](/mnt/c/Users/ASUS/Desktop/DieuKhac/deploy/.env.ip.example)
+- [`deploy/deploy-ip.sh`](/mnt/c/Users/ASUS/Desktop/DieuKhac/deploy/deploy-ip.sh)
+
+Tren server:
+
+```bash
+git clone <repo-url>
+cd DieuKhac
+cp deploy/.env.ip.example deploy/.env.ip
+```
+
+Sua `deploy/.env.ip`:
+
+- `SERVER_IP`
+- `DEPLOY_BRANCH`
+- `JWT_SECRET`
+- `MONGODB_URI`
+- `MONGODB_DB_NAME`
+- `AWS_REGION`
+- `AWS_S3_BUCKET`
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+
+Chay deploy:
+
+```bash
+chmod +x deploy/deploy-ip.sh
+./deploy/deploy-ip.sh
+```
+
+Mo firewall / security group:
+
+- `80/tcp`
+- `8080/tcp`
+
+Khi da co domain, chuyen sang bo file `deploy/compose.production.yml` + `deploy/Caddyfile` de bat HTTPS.
+
+Neu dung GitHub Actions auto deploy theo IP, workflow se SSH vao VPS va chay `deploy/deploy-ip.sh`. Script nay se `git pull` nhanh `DEPLOY_BRANCH` roi rebuild container.
+
 ## Tài khoản admin demo
 
 - Email: `admin@dieu-khac.vn`
