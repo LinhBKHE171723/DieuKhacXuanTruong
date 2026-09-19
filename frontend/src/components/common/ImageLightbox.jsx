@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
+const DEFAULT_PLACEHOLDER =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f7f1e7'/%3E%3Cpath d='M160 110 L240 110 L240 190 L160 190 Z' stroke='%23c59b27' stroke-width='2' fill='none'/%3E%3Ccircle cx='200' cy='150' r='20' fill='%23c59b27' opacity='0.3'/%3E%3Ctext x='200' y='220' font-family='serif' font-size='14' fill='%23786f5f' text-anchor='middle'%3EĐiêu Khắc Xuân Trường%3C/text%3E%3C/svg%3E";
+
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 4;
 const ZOOM_STEP = 0.25;
@@ -159,11 +162,12 @@ export function ImageLightbox({
 
         <div className="image-lightbox__stage" onWheel={handleWheel}>
           <img
-            src={activeImage.url}
+            src={activeImage.url || DEFAULT_PLACEHOLDER}
             alt={activeImage.altText || title}
             style={{ transform: `scale(${zoom})` }}
             loading="eager"
             decoding="async"
+            onError={(e) => { e.currentTarget.src = DEFAULT_PLACEHOLDER; }}
           />
         </div>
 

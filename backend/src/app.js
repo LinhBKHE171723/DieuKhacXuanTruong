@@ -15,7 +15,7 @@ const allowedOrigins = env.allowedOrigins.length
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin || env.nodeEnv === "development" || allowedOrigins.includes(origin) || /localhost|127\.0\.0\.1/.test(origin)) {
         return callback(null, true);
       }
       return callback(new Error("Origin not allowed by CORS"));

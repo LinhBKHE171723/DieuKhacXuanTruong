@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { HeaderSearchModal } from "./HeaderSearchModal";
 
 const navItems = [
   { to: "/", label: "Trang chủ" },
@@ -11,6 +12,7 @@ const navItems = [
 
 export function Header({ settings = {} }) {
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const headerRef = useRef(null);
 
   useEffect(() => {
@@ -21,9 +23,7 @@ export function Header({ settings = {} }) {
 
   useEffect(() => {
     const headerElement = headerRef.current;
-    if (!headerElement) {
-      return undefined;
-    }
+    if (!headerElement) return undefined;
 
     const syncHeaderOffset = () => {
       document.documentElement.style.setProperty("--header-offset", `${headerElement.offsetHeight}px`);
@@ -54,11 +54,11 @@ export function Header({ settings = {} }) {
               <img src={settings.logoUrl} alt={settings.companyName || "Logo"} loading="eager" />
             </span>
           ) : (
-            <span className="site-logo__mark">DK</span>
+            <span className="site-logo__mark">XT</span>
           )}
           <span>
-            <strong>{settings.companyName || "Điêu Khắc Tân Cổ Điển"}</strong>
-            <small>{settings.tagline || "Hoa văn, phù điêu, bê tông mỹ thuật"}</small>
+            <strong>{settings.companyName || "Điêu Khắc Xuân Trường"}</strong>
+            <small>{settings.tagline || "Hoa văn, phù điêu, tượng & bê tông mỹ thuật"}</small>
           </span>
         </Link>
 
@@ -73,22 +73,46 @@ export function Header({ settings = {} }) {
               {item.label}
             </NavLink>
           ))}
-          <a className="button button--primary site-nav__cta" href={`tel:${settings.hotline || ""}`}>
-            Gọi tư vấn
+
+          {/* Desktop Only Search Trigger Button */}
+          <button
+            type="button"
+            className="site-nav__search-btn desktop-only-search"
+            onClick={() => setSearchOpen(true)}
+            title="Tìm kiếm tác phẩm"
+          >
+            <span>🔍</span> Tìm tác phẩm...
+          </button>
+
+          <a className="button button--primary site-nav__cta" href={`tel:${settings.hotline || "0909888668"}`}>
+            📞 {settings.hotline || "0909 888 668"}
           </a>
         </nav>
 
-        <button
-          className="mobile-toggle"
-          type="button"
-          aria-label={open ? "Đóng menu điều hướng" : "Mở menu điều hướng"}
-          onClick={() => setOpen((value) => !value)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        {/* Mobile Header Actions - Single Search Button + Toggle */}
+        <div className="header-actions-mobile">
+          <button
+            type="button"
+            className="mobile-search-btn"
+            onClick={() => setSearchOpen(true)}
+            aria-label="Tìm kiếm tác phẩm"
+          >
+            🔍
+          </button>
+          <button
+            className="mobile-toggle"
+            type="button"
+            aria-label={open ? "Đóng menu điều hướng" : "Mở menu điều hướng"}
+            onClick={() => setOpen((value) => !value)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </div>
+
+      <HeaderSearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }

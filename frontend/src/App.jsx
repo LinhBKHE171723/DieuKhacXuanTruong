@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect } from "react";
 import { Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { Header } from "./components/common/Header";
 import { Footer } from "./components/common/Footer";
+import { FloatingContactWidget } from "./components/common/FloatingContactWidget";
 import { LoadingScreen } from "./components/common/LoadingScreen";
 import { useProductCategories, useSiteSettings } from "./hooks/useSiteData";
 import { AboutPage } from "./pages/AboutPage";
@@ -60,6 +61,7 @@ function Layout() {
         <Outlet />
       </main>
       <Footer settings={settingsQuery.data} categories={categoriesQuery.data?.items || []} />
+      <FloatingContactWidget settings={settingsQuery.data} />
     </div>
   );
 }

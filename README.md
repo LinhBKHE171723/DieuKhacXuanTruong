@@ -25,14 +25,14 @@ Website gioi thieu dich vu dieu khac va trang admin quan tri noi dung, duoc tach
 - Form lien he gui ve backend
 - Dashboard admin
 - CRUD banner, danh muc, san pham, cong trinh, trang tinh, lien he, settings
-- Upload anh len AWS S3 trong admin
+- Upload anh len Cloudinary trong admin
 
 ## Yeu cau moi truong
 
 - `Node.js 22+`
 - `npm 10+`
 - `MongoDB Atlas`
-- `AWS S3`
+- `Cloudinary`
 
 ## Chay local
 
@@ -58,10 +58,9 @@ Can dien toi thieu cac bien backend trong `.env`:
 - `MONGODB_URI`
 - `MONGODB_DB_NAME`
 - `JWT_SECRET`
-- `AWS_REGION`
-- `AWS_S3_BUCKET`
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
 
 Mac dinh:
 
@@ -164,5 +163,5 @@ npm run sync:demo-content
 ## Ghi chu van hanh
 
 - Khong commit file `.env`
-- Upload anh phu thuoc vao `AWS_REGION`, `AWS_S3_BUCKET`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
+- Upload anh phu thuoc vao `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
 - Neu can du lieu demo, dung `npm run seed`

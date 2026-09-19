@@ -13,7 +13,7 @@ const mediaSchema = new Schema(
     key: { type: String, required: true, unique: true },
     folder: { type: String, default: "media" },
     altText: { type: String, default: "" },
-    provider: { type: String, default: "s3" }
+    provider: { type: String, default: "cloudinary" }
   },
   baseSchemaOptions
 );

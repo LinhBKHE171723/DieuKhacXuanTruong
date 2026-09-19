@@ -10,9 +10,7 @@ const bannerActions = [
 ];
 
 function BannerLink({ to, children, variant = "primary" }) {
-  if (!to) {
-    return null;
-  }
+  if (!to) return null;
 
   const className =
     variant === "action"
@@ -35,9 +33,7 @@ function BannerLink({ to, children, variant = "primary" }) {
 }
 
 export function HeroSlider({ banners = [] }) {
-  if (!banners.length) {
-    return null;
-  }
+  if (!banners.length) return null;
 
   return (
     <section className="hero-slider-shell">
@@ -53,7 +49,7 @@ export function HeroSlider({ banners = [] }) {
         >
           {banners.map((banner, index) => {
             return (
-              <SwiperSlide key={banner.id}>
+              <SwiperSlide key={banner.id || index}>
                 <article className="hero-slide">
                   <div className="hero-slide__media">
                     <img
@@ -67,7 +63,6 @@ export function HeroSlider({ banners = [] }) {
                       sizes="(min-width: 1320px) 1280px, calc(100vw - 32px)"
                     />
                   </div>
-                  <div className="hero-slide__overlay" />
                 </article>
               </SwiperSlide>
             );

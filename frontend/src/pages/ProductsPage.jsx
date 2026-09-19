@@ -1,20 +1,31 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { publicApi } from "../api/publicApi";
 import { EmptyState } from "../components/common/EmptyState";
 import { ErrorState } from "../components/common/ErrorState";
 import { LoadingScreen } from "../components/common/LoadingScreen";
-import { PageHero } from "../components/common/PageHero";
 import { Seo } from "../components/common/Seo";
 import { ProductCard } from "../components/product/ProductCard";
-import { ProductFilters } from "../components/product/ProductFilters";
 import { useProductCategories } from "../hooks/useSiteData";
+
+const MATERIAL_CHIPS = [
+  { label: "Tất cả chất liệu", value: "" },
+  { label: "Thạch cao", value: "thạch cao" },
+  { label: "Bê tông GFRC", value: "bê tông" },
+  { label: "Gỗ", value: "gỗ" },
+  { label: "Đá", value: "đá" },
+  { label: "Phù điêu", value: "phù điêu" },
+  { label: "Tượng", value: "tượng" },
+  { label: "Mặt tiền / Cột", value: "cột" }
+];
 
 export function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoriesQuery = useProductCategories();
   const loadMoreRef = useRef(null);
+  const [viewMode, setViewMode] = useState("grid"); // "grid" | "list"
+
   const filters = {
     search: searchParams.get("search") || "",
     categoryId: searchParams.get("categoryId") || "",
@@ -24,7 +35,7 @@ export function ProductsPage() {
     queryKey: ["public-products", filters],
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
-      publicApi.getProducts({ ...filters, page: pageParam, limit: 12 }),
+      publicApi.getProducts({ ...filters, page: pageParam, limit: 16 }),
     getNextPageParam: (lastPage) => {
       const pagination = lastPage?.pagination;
       if (!pagination || pagination.currentPage >= pagination.totalPages) {
@@ -79,67 +90,137 @@ export function ProductsPage() {
 
   const pages = productsQuery.data?.pages || [];
   const products = pages.flatMap((page) => page.items || []);
+  const categories = categoriesQuery.data?.items || [];
   const totalItems = pages[0]?.pagination?.totalItems || products.length;
 
   return (
     <>
       <Seo
-        title="Sản phẩm điêu khắc và hoa văn"
-        description="Danh sách sản phẩm điêu khắc thạch cao, bê tông mỹ thuật, hoa văn công trình và cấu kiện đúc sẵn."
-      />
-      <PageHero
-        className="page-hero--catalog"
-        eyebrow="Sản phẩm"
-        title="Sản phẩm và chi tiết kiến trúc"
-        description="Tìm nhanh mẫu phù hợp theo danh mục và phong cách."
-        imageUrl="https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1800&q=80"
+        title="Sản phẩm điêu khắc & hoa văn | Điêu Khắc Xuân Trường"
+        description="Danh mục sản phẩm điêu khắc thạch cao, bê tông mỹ thuật, phù điêu, tượng và hoa văn công trình."
       />
 
-      <section className="section section--catalog-mobile">
-        <div className="container container--wide catalog-layout">
-          <aside className="catalog-sidebar">
-            <div className="catalog-sidebar__intro">
-              <span className="section-title__eyebrow">Bộ lọc</span>
-              <h2>Tìm nhanh mẫu phù hợp</h2>
-              <p>
-                Lọc theo tên và danh mục để thu gọn danh sách ngay khi bạn đang
-                xem.
-              </p>
+      <section className="section section--catalog-compact">
+        <div className="container container--wide">
+          {/* Unified Luxury Control Bar: Category Select + Search + Material Chips + View Mode */}
+          <div className="catalog-unified-toolbar">
+            {/* Category Select Dropdown */}
+            <div className="catalog-select-wrapper">
+              <span className="select-icon">📁</span>
+              <select
+                className="catalog-category-select"
+                value={filters.categoryId}
+                onChange={(e) => updateFilters({ ...filters, categoryId: e.target.value })}
+              >
+                <option value="">✨ Tất cả danh mục ({totalItems} tác phẩm)</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <ProductFilters
-              categories={categoriesQuery.data?.items || []}
-              filters={filters}
-              onChange={updateFilters}
-            />
-          </aside>
+            {/* Direct Search Input */}
+            <div className="catalog-search-inline">
+              <span className="search-inline-icon">🔍</span>
+              <input
+                type="text"
+                className="search-inline-input"
+                placeholder="Nhập tên sản phẩm cần tìm..."
+                value={filters.search}
+                onChange={(e) => updateFilters({ ...filters, search: e.target.value })}
+              />
+              {filters.search && (
+                <button
+                  type="button"
+                  className="search-inline-clear"
+                  onClick={() => updateFilters({ ...filters, search: "" })}
+                >
+                  ✕
+                </button>
+              )}
+            </div>
 
-          <div className="catalog-content">
-            <div className="catalog-content__head">
-              <div>
-                <span className="section-title__eyebrow">Danh sách</span>
+            {/* Material Filter Chips */}
+            <div className="catalog-material-chips">
+              <span className="chips-label">Chất liệu:</span>
+              <div className="chips-group">
+                {MATERIAL_CHIPS.map((chip) => {
+                  const isActive = (filters.search || "").toLowerCase() === chip.value.toLowerCase();
+                  return (
+                    <button
+                      key={chip.label}
+                      type="button"
+                      className={`material-chip ${isActive ? "active" : ""}`}
+                      onClick={() => updateFilters({ ...filters, search: chip.value })}
+                    >
+                      {chip.label}
+                    </button>
+                  );
+                })}
               </div>
-              {productsQuery.isFetching && !productsQuery.isFetchingNextPage ? (
-                <p className="list-status" aria-live="polite">
-                  Đang cập nhật danh sách sản phẩm...
-                </p>
-              ) : null}
             </div>
+
+            {/* View Mode Switcher */}
+            <div className="catalog-view-controls">
+              <div className="view-mode-buttons">
+                <button
+                  type="button"
+                  className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
+                  onClick={() => setViewMode("grid")}
+                  title="Chế độ Lưới 4 cột"
+                >
+                  ▦ Lưới
+                </button>
+                <button
+                  type="button"
+                  className={`view-btn ${viewMode === "list" ? "active" : ""}`}
+                  onClick={() => setViewMode("list")}
+                  title="Chế độ Danh sách"
+                >
+                  ☰ Danh sách
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Full Width Catalog Product List */}
+          <div className="catalog-full-content">
+            {filters.search && (
+              <div className="catalog-search-status-bar">
+                <span>Kết quả tìm kiếm cho: <strong>"{filters.search}"</strong> ({products.length} tác phẩm)</span>
+                <button
+                  type="button"
+                  className="clear-search-chip"
+                  onClick={() => updateFilters({ ...filters, search: "" })}
+                >
+                  ✕ Xóa từ khóa
+                </button>
+              </div>
+            )}
+
+            {productsQuery.isFetching && !productsQuery.isFetchingNextPage ? (
+              <p className="list-status" aria-live="polite">
+                Đang cập nhật danh sách tác phẩm...
+              </p>
+            ) : null}
 
             {products.length ? (
-              <div className="card-grid card-grid--catalog">
+              <div className={viewMode === "list" ? "card-list--catalog" : "card-grid--full-width"}>
                 {products.map((product, index) => (
                   <ProductCard
                     key={product.id}
                     product={product}
-                    delay={index * 0.04}
+                    delay={index * 0.025}
+                    viewMode={viewMode}
                   />
                 ))}
               </div>
             ) : (
               <EmptyState
                 title="Không tìm thấy sản phẩm"
-                message="Thử đổi từ khóa tìm kiếm hoặc chọn danh mục khác."
+                message="Thử đổi từ khóa tìm kiếm hoặc chọn danh mục khác ở menu trên."
               />
             )}
 
@@ -155,12 +236,12 @@ export function ProductsPage() {
                       disabled={productsQuery.isFetchingNextPage}
                     >
                       {productsQuery.isFetchingNextPage
-                        ? "Đang tải thêm..."
-                        : "Tải thêm sản phẩm"}
+                        ? "Đang tải..."
+                        : "Tải thêm tác phẩm"}
                     </button>
                   </>
                 ) : (
-                  <p className="catalog-end">Đã hiển thị toàn bộ sản phẩm.</p>
+                  <p className="catalog-end">Đã hiển thị toàn bộ tác phẩm.</p>
                 )}
               </div>
             ) : null}
