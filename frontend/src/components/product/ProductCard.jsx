@@ -44,7 +44,11 @@ export function ProductCard({ product, delay = 0, viewMode = "grid" }) {
               <span className="product-card__category">
                 {product.category?.name || "Điêu khắc"}
               </span>
-              <h3>{product.name}</h3>
+              <h3>
+                <Link className="product-card__title-link" to={`/san-pham/${product.slug}`}>
+                  {product.name}
+                </Link>
+              </h3>
             </div>
             <p className="product-card-list-desc">{product.shortDescription}</p>
 
@@ -103,13 +107,19 @@ export function ProductCard({ product, delay = 0, viewMode = "grid" }) {
         transition={{ duration: 0.3, ease: "easeOut" }}
       >
         <div className="product-card__image">
-          <img
-            src={imageUrl}
-            alt={product.name}
-            loading="lazy"
-            decoding="async"
-            onError={handleImageError}
-          />
+          <Link
+            className="product-card__image-link"
+            to={`/san-pham/${product.slug}`}
+            aria-label={`Xem chi tiết ${product.name}`}
+          >
+            <img
+              src={imageUrl}
+              alt={product.name}
+              loading="lazy"
+              decoding="async"
+              onError={handleImageError}
+            />
+          </Link>
           <div className="product-card__3d-overlay">
             <button
               type="button"
@@ -132,7 +142,11 @@ export function ProductCard({ product, delay = 0, viewMode = "grid" }) {
           {product.category?.name && (
             <span className="product-card__category">{product.category.name}</span>
           )}
-          <h3>{product.name}</h3>
+          <h3>
+            <Link className="product-card__title-link" to={`/san-pham/${product.slug}`}>
+              {product.name}
+            </Link>
+          </h3>
           <p>{product.shortDescription}</p>
 
           <div className="product-card__footer-actions">

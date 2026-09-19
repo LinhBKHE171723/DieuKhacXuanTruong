@@ -28,7 +28,13 @@ export function ProductQuickViewModal({ product, open, onClose }) {
         className="quickview-modal-content"
         onClick={(e) => e.stopPropagation()}
       >
-        <button type="button" className="quickview-close-btn" onClick={onClose}>
+        <button
+          type="button"
+          className="quickview-close-btn"
+          onClick={onClose}
+          aria-label="Đóng cửa sổ xem nhanh"
+          title="Đóng"
+        >
           ✕
         </button>
 
