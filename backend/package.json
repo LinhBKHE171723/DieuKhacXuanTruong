@@ -8,6 +8,7 @@
     "start": "node src/server.js",
     "build": "node -e \"console.log('No backend build step required')\"",
     "seed": "node src/database/seeders/demo.seed.js",
+    "create:admin": "node src/database/seeders/create-admin.js",
     "sync:demo-content": "node src/database/seeders/sync-demo-content.js"
   },
   "dependencies": {
