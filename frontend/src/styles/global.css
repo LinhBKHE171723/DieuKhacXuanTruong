@@ -2437,6 +2437,7 @@ p {
 .site-nav__search-btn {
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
   gap: 8px;
   padding: 8px 16px;
   border-radius: 999px;
@@ -2444,8 +2445,14 @@ p {
   background: rgba(255, 255, 255, 0.06);
   color: #d4ceb8;
   font-size: 0.85rem;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.25s ease;
+}
+
+.site-nav__cta {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .site-nav__search-btn:hover {
