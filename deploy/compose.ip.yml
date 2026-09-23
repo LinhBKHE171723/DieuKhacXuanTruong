@@ -8,9 +8,14 @@ services:
       - backend
     ports:
       - "80:80"
-      - "8080:8080"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN}
     volumes:
       - ./Caddyfile.ip:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
 
   frontend:
     build:
@@ -18,7 +23,7 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_BASE_URL: /api
-        VITE_SITE_URL: http://${SERVER_IP}
+        VITE_SITE_URL: https://${SITE_DOMAIN}
     restart: unless-stopped
 
   admin:
@@ -39,7 +44,11 @@ services:
     environment:
       NODE_ENV: production
       PORT: 5000
-      APP_URL: http://${SERVER_IP}
-      CLIENT_URL: http://${SERVER_IP}
-      ADMIN_URL: http://${SERVER_IP}:8080
-      ALLOWED_ORIGINS: http://${SERVER_IP},http://${SERVER_IP}:8080
+      APP_URL: https://${SITE_DOMAIN}
+      CLIENT_URL: https://${SITE_DOMAIN}
+      ADMIN_URL: https://${SITE_DOMAIN}/admin
+      ALLOWED_ORIGINS: https://${SITE_DOMAIN},https://www.${SITE_DOMAIN}
+
+volumes:
+  caddy_data:
+  caddy_config:

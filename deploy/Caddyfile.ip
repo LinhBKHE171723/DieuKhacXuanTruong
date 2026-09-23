@@ -1,27 +1,21 @@
-{
-  auto_https off
+www.{$SITE_DOMAIN} {
+  redir https://{$SITE_DOMAIN}{uri} permanent
 }
 
-:80 {
+{$SITE_DOMAIN} {
   encode zstd gzip
 
   handle /api/* {
     reverse_proxy backend:5000
+  }
+
+  redir /admin /admin/ 308
+
+  handle_path /admin/* {
+    reverse_proxy admin:80
   }
 
   handle {
     reverse_proxy frontend:80
-  }
-}
-
-:8080 {
-  encode zstd gzip
-
-  handle /api/* {
-    reverse_proxy backend:5000
-  }
-
-  handle {
-    reverse_proxy admin:80
   }
 }

@@ -26,7 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       }}
     >
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <BrowserRouter basename="/admin">
           <AuthProvider>
             <App />
           </AuthProvider>
