@@ -32,10 +32,12 @@ export function Footer({ settings = {}, categories = [] }) {
         </div>
       </div>
       <div className="site-footer__bottom">
-        <span>© {new Date().getFullYear()} {settings.siteName || "Điêu Khắc Platform"}</span>
-        <div>
-          <Link to="/gioi-thieu">Giới thiệu</Link>
-          <Link to="/lien-he">Liên hệ</Link>
+        <div className="container site-footer__bottom-inner">
+          <span>© {new Date().getFullYear()} {settings.siteName || "Điêu Khắc Platform"}</span>
+          <nav className="site-footer__bottom-links" aria-label="Liên kết cuối trang">
+            <Link to="/gioi-thieu">Giới thiệu</Link>
+            <Link to="/lien-he">Liên hệ</Link>
+          </nav>
         </div>
       </div>
     </footer>
