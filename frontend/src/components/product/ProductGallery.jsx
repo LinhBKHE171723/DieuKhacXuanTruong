@@ -42,29 +42,29 @@ export function ProductGallery({ images = [], title }) {
             <span className="detail-gallery__zoom-chip">Chạm để phóng to</span>
           </button>
         </div>
-        <div className="detail-gallery__thumbs-shell">
-          {images.length > 1 ? (
+        {images.length > 1 ? (
+          <div className="detail-gallery__thumbs-shell">
             <p className="detail-gallery__thumbs-hint">Vuốt ngang để xem thêm ảnh</p>
-          ) : null}
-          <div className="detail-gallery__thumbs">
-            {images.map((image, index) => (
-              <button
-                key={image.id || image.url || index}
-                type="button"
-                className={activeIndex === index ? "is-active" : ""}
-                onClick={() => setActiveIndex(index)}
-              >
-                <img
-                  src={image.url || DEFAULT_PLACEHOLDER}
-                  alt={image.altText || title}
-                  loading="lazy"
-                  decoding="async"
-                  onError={handleImageError}
-                />
-              </button>
-            ))}
+            <div className="detail-gallery__thumbs">
+              {images.map((image, index) => (
+                <button
+                  key={image.id || image.url || index}
+                  type="button"
+                  className={activeIndex === index ? "is-active" : ""}
+                  onClick={() => setActiveIndex(index)}
+                >
+                  <img
+                    src={image.url || DEFAULT_PLACEHOLDER}
+                    alt={image.altText || title}
+                    loading="lazy"
+                    decoding="async"
+                    onError={handleImageError}
+                  />
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
       <ImageLightbox
         images={images}

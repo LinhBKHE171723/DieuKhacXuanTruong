@@ -17,7 +17,7 @@ export function FeaturedProducts({ products = [] }) {
         />
 
         <div className="card-grid--full-width">
-          {products.slice(0, 8).map((product, index) => (
+          {products.slice(0, 12).map((product, index) => (
             <ProductCard key={product.id} product={product} delay={index * 0.05} />
           ))}
         </div>

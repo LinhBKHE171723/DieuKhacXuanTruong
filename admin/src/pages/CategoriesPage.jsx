@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
@@ -11,6 +12,7 @@ import {
   Space,
   Switch,
   Table,
+  Tag,
   message
 } from "antd";
 import { adminApi } from "../api/adminApi";
@@ -19,6 +21,7 @@ import { PageHeaderCard } from "../components/common/PageHeaderCard";
 import { StatusTag } from "../components/common/StatusTag";
 
 export function CategoriesPage() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(null);
@@ -71,8 +74,32 @@ export function CategoriesPage() {
   };
 
   const columns = [
-    { title: "Tên", dataIndex: "name" },
-    { title: "Loại", dataIndex: "type" },
+    { title: "Tên danh mục / Mẫu", dataIndex: "name", render: (name) => <strong>{name}</strong> },
+    {
+      title: "Loại",
+      dataIndex: "type",
+      render: (type) => (
+        <Tag color={type === "PRODUCT" ? "gold" : "blue"}>
+          {type === "PRODUCT" ? "Sản phẩm / Mẫu" : "Công trình"}
+        </Tag>
+      )
+    },
+    {
+      title: "Số quy cách kích thước",
+      render: (_, record) => {
+        if (record.type !== "PRODUCT") return "-";
+        const count = record.productCount || 0;
+        return (
+          <Button
+            type="link"
+            style={{ padding: 0, fontWeight: 600, color: count ? "#c59b27" : "#999" }}
+            onClick={() => navigate(`/products?categoryId=${record.id}`)}
+          >
+            {count} kích thước quy cách →
+          </Button>
+        );
+      }
+    },
     { title: "Thứ tự", dataIndex: "sortOrder", width: 90 },
     {
       title: "Nổi bật",
@@ -88,9 +115,18 @@ export function CategoriesPage() {
       title: "Tác vụ",
       render: (_, record) => (
         <Space>
-          <Button onClick={() => openEdit(record)}>Sửa</Button>
+          {record.type === "PRODUCT" && (
+            <Button
+              type="dashed"
+              size="small"
+              onClick={() => navigate(`/products?categoryId=${record.id}`)}
+            >
+              Xem kích thước
+            </Button>
+          )}
+          <Button size="small" onClick={() => openEdit(record)}>Sửa</Button>
           <Popconfirm title="Xóa danh mục này?" okText="Xóa" cancelText="Hủy" onConfirm={() => deleteMutation.mutate(record.id)}>
-            <Button danger>Xóa</Button>
+            <Button size="small" danger>Xóa</Button>
           </Popconfirm>
         </Space>
       )

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import { publicApi } from "../api/publicApi";
@@ -10,6 +11,12 @@ import { parseDimensionOptions } from "../utils/productDimensions";
 
 export function ProductDetailPage() {
   const { slug } = useParams();
+  const [visibleRelated, setVisibleRelated] = useState(4);
+
+  useEffect(() => {
+    setVisibleRelated(4);
+  }, [slug]);
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["product-detail", slug],
     queryFn: () => publicApi.getProductDetail(slug)
@@ -67,17 +74,38 @@ export function ProductDetailPage() {
       </section>
 
       {data.relatedProducts?.length ? (
-        <section className="section section--soft">
-          <div className="container">
+        <section className="section section--soft related-products-showcase">
+          <div className="container container--wide">
             <div className="section-title">
-              <span className="section-title__eyebrow">Liên quan</span>
-              <h2>Sản phẩm cùng nhóm</h2>
+              <span className="section-title__eyebrow">Cùng quy cách mẫu mã</span>
+              <h2>Sản phẩm cùng nhóm ({data.relatedProducts.length} mẫu kích thước)</h2>
             </div>
-            <div className="card-grid">
-              {data.relatedProducts.map((product, index) => (
-                <ProductCard key={product.id} product={product} delay={index * 0.05} />
+            <div className="card-grid--full-width">
+              {data.relatedProducts.slice(0, visibleRelated).map((product, index) => (
+                <ProductCard key={product.id} product={product} delay={index * 0.04} />
               ))}
             </div>
+
+            {data.relatedProducts.length > visibleRelated ? (
+              <div className="related-load-more" style={{ textAlign: "center", marginTop: "36px" }}>
+                <button
+                  type="button"
+                  className="button button--ghost"
+                  onClick={() => setVisibleRelated((prev) => prev + 4)}
+                >
+                  ↓ Xem thêm quy cách khác (còn {data.relatedProducts.length - visibleRelated} mẫu)
+                </button>
+              </div>
+            ) : data.categoryId || data.category?.id ? (
+              <div className="related-load-more" style={{ textAlign: "center", marginTop: "36px" }}>
+                <Link
+                  to={`/san-pham?categoryId=${data.categoryId || data.category?.id}`}
+                  className="button button--primary-gold-outline"
+                >
+                  Xem toàn bộ mẫu trong danh mục {data.category?.name || ""} →
+                </Link>
+              </div>
+            ) : null}
           </div>
         </section>
       ) : null}

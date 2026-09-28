@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 export function FloatingContactWidget({ settings = {} }) {
-  const phone = settings.hotline || "0909888668";
-  const formattedPhone = settings.hotline || "0909 888 668";
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const phone = settings.hotline || "0912209186";
+  const formattedPhone = settings.hotline || "091 220 91 86";
   const zaloUrl = settings.zaloUrl || `https://zalo.me/${phone.replace(/\D/g, "")}`;
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 280);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <aside className="senior-floating-contact" aria-label="Tư vấn nhanh">
+    <aside className="senior-floating-contact" aria-label="Tư vấn nhanh và tiện ích">
+      {/* Scroll to top button - appears on scroll */}
+      {showScrollTop && (
+        <button
+          type="button"
+          onClick={scrollToTop}
+          className="floating-btn floating-btn--scroll-top"
+          title="Quay lại đầu trang"
+          aria-label="Quay lại đầu trang"
+        >
+          <span className="floating-btn__icon">↑</span>
+        </button>
+      )}
+
+      {/* Direct Call Button */}
       <a
         href={`tel:${phone}`}
         className="floating-btn floating-btn--phone"
@@ -19,6 +47,7 @@ export function FloatingContactWidget({ settings = {} }) {
         </span>
       </a>
 
+      {/* Zalo Chat Button */}
       <a
         href={zaloUrl}
         target="_blank"

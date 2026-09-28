@@ -12,7 +12,7 @@ export const getHomepageData = async () => {
       getActiveBanners(),
       getPageBySlug("home", true),
       getCategories({ type: "PRODUCT", featured: true, limit: "all" }, true),
-      getProducts({ featured: true, limit: 6 }, true),
+      getProducts({ featured: true, limit: 12 }, true),
       getProjects({ featured: true, limit: 6 }, true)
     ]);
 

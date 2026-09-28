@@ -80,13 +80,29 @@ const attachRelations = async (products) => {
   });
 };
 
-const buildWhere = (query = {}, publicOnly = false) => {
+const buildWhere = async (query = {}, publicOnly = false) => {
   const where = {};
   if (query.categoryId) {
     where.categoryId = query.categoryId;
   }
   if (query.search) {
-    where.name = new RegExp(escapeRegex(query.search.trim()), "i");
+    const searchRegex = new RegExp(escapeRegex(query.search.trim()), "i");
+    const matchedCategories = await Category.find({ name: searchRegex }).select("_id");
+    const matchedCatIds = matchedCategories.map((c) => c._id);
+
+    const orClauses = [
+      { name: searchRegex },
+      { shortDescription: searchRegex },
+      { material: searchRegex },
+      { dimensions: searchRegex },
+      { tags: searchRegex }
+    ];
+
+    if (matchedCatIds.length) {
+      orClauses.push({ categoryId: { $in: matchedCatIds } });
+    }
+
+    where.$or = orClauses;
   }
   if (query.featured === "true" || query.featured === true) {
     where.isFeatured = true;
@@ -99,7 +115,7 @@ const buildWhere = (query = {}, publicOnly = false) => {
 
 export const getProducts = async (query = {}, publicOnly = false) => {
   const { page, limit, offset } = getPagination(query.page, query.limit || 9);
-  const where = buildWhere(query, publicOnly);
+  const where = await buildWhere(query, publicOnly);
   const [count, rows] = await Promise.all([
     Product.countDocuments(where),
     Product.find(where)
@@ -137,8 +153,8 @@ export const getProductBySlug = async (slug) => {
     isVisible: true,
     _id: { $ne: product._id }
   })
-    .sort({ isFeatured: -1, sortOrder: 1 })
-    .limit(4);
+    .sort({ isFeatured: -1, sortOrder: 1, createdAt: -1 })
+    .limit(24);
 
   return {
     ...serialized,

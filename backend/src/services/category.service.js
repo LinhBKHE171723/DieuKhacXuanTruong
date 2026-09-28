@@ -1,4 +1,4 @@
-import { Category } from "../models/index.js";
+import { Category, Product } from "../models/index.js";
 import { ApiError } from "../utils/apiError.js";
 import { getPagination, buildPaginationMeta } from "../utils/pagination.js";
 import { ensureUniqueSlug } from "../utils/slug.js";
@@ -29,11 +29,31 @@ const buildCategoryWhere = (query = {}, publicOnly = false) => {
 
 const serializeCategory = (category) => category.toJSON();
 
+const attachProductCounts = async (rows, publicOnly = false) => {
+  if (!rows.length) return [];
+  const categoryIds = rows.map((r) => r._id);
+  const counts = await Product.aggregate([
+    { $match: { categoryId: { $in: categoryIds }, ...(publicOnly ? { isVisible: true } : {}) } },
+    { $group: { _id: "$categoryId", count: { $sum: 1 } } }
+  ]);
+  const countMap = counts.reduce((acc, curr) => {
+    acc[curr._id.toString()] = curr.count;
+    return acc;
+  }, {});
+  return rows.map((row) => {
+    const item = serializeCategory(row);
+    return {
+      ...item,
+      productCount: countMap[item.id] || 0
+    };
+  });
+};
+
 export const getCategories = async (query = {}, publicOnly = false) => {
   if (publicOnly && query.limit === "all") {
     const rows = await Category.find(buildCategoryWhere(query, true)).sort({ sortOrder: 1, createdAt: -1 });
-
-    return { items: rows.map(serializeCategory) };
+    const items = await attachProductCounts(rows, true);
+    return { items };
   }
 
   const { page, limit, offset } = getPagination(query.page, query.limit || 20);
@@ -46,8 +66,10 @@ export const getCategories = async (query = {}, publicOnly = false) => {
       .limit(limit)
   ]);
 
+  const items = await attachProductCounts(rows, publicOnly);
+
   return {
-    items: rows.map(serializeCategory),
+    items,
     pagination: buildPaginationMeta(count, page, limit)
   };
 };

@@ -41,21 +41,16 @@ export function ProductCard({ product, delay = 0, viewMode = "grid" }) {
 
           <div className="product-card-list-content">
             <div className="product-card-list-header">
-              <span className="product-card__category">
-                {product.category?.name || "Điêu khắc"}
-              </span>
-              <h3>
+              <h3 className="product-card__spec-name">
                 <Link className="product-card__title-link" to={`/san-pham/${product.slug}`}>
                   {product.name}
                 </Link>
               </h3>
             </div>
-            <p className="product-card-list-desc">{product.shortDescription}</p>
 
-            <div className="product-card-list-meta">
-              <span>🧱 Chất liệu: <strong>{product.material || "Chất liệu cao cấp"}</strong></span>
-              <span>📐 Kích thước: <strong>{product.dimensions || "Theo yêu cầu"}</strong></span>
-            </div>
+            {product.shortDescription && (
+              <p className="product-card-list-desc">{product.shortDescription}</p>
+            )}
 
             <div className="product-card-list-actions">
               <button
@@ -139,15 +134,15 @@ export function ProductCard({ product, delay = 0, viewMode = "grid" }) {
         </div>
 
         <div className="product-card__body">
-          {product.category?.name && (
-            <span className="product-card__category">{product.category.name}</span>
-          )}
-          <h3>
+          <h3 className="product-card__spec-name">
             <Link className="product-card__title-link" to={`/san-pham/${product.slug}`}>
               {product.name}
             </Link>
           </h3>
-          <p>{product.shortDescription}</p>
+
+          {product.shortDescription && (
+            <p className="product-card__desc">{product.shortDescription}</p>
+          )}
 
           <div className="product-card__footer-actions">
             <button
