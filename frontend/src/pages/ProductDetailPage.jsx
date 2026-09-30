@@ -65,7 +65,12 @@ export function ProductDetailPage() {
                 <span key={tag}>{tag}</span>
               ))}
             </div>
-            <div className="rich-content" dangerouslySetInnerHTML={{ __html: data.content }} />
+            <div
+              className="rich-content"
+              dangerouslySetInnerHTML={{
+                __html: (data.content || "").replace(/&nbsp;|\u00A0/g, " ")
+              }}
+            />
             <Link className="button button--primary" to="/lien-he">
               Liên hệ tư vấn
             </Link>

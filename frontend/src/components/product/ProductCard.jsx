@@ -35,7 +35,7 @@ export function ProductCard({ product, delay = 0, viewMode = "grid" }) {
               className="list-3d-badge"
               onClick={() => setShow3DModal(true)}
             >
-              ✨ Xoay 3D
+              🔍 Soi chi tiết
             </button>
           </div>
 
@@ -65,7 +65,7 @@ export function ProductCard({ product, delay = 0, viewMode = "grid" }) {
                 className="button button--primary-gold-outline"
                 onClick={() => setShow3DModal(true)}
               >
-                ✨ Xoay 3D
+                🔍 Soi chi tiết
               </button>
               <Link className="button button--primary" to={`/san-pham/${product.slug}`}>
                 Chi tiết →
@@ -128,7 +128,7 @@ export function ProductCard({ product, delay = 0, viewMode = "grid" }) {
               className="product-card__3d-btn gold"
               onClick={() => setShow3DModal(true)}
             >
-              ✨ Soi 3D
+              🔍 Soi chi tiết
             </button>
           </div>
         </div>
@@ -157,7 +157,7 @@ export function ProductCard({ product, delay = 0, viewMode = "grid" }) {
               className="button button--primary-gold-outline"
               onClick={() => setShow3DModal(true)}
             >
-              Xoay 3D
+              Soi chi tiết
             </button>
           </div>
         </div>

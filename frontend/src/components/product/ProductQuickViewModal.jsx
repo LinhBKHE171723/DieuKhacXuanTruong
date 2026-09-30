@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { Art3DViewerModal } from "../common/Art3DViewerModal";
@@ -9,6 +9,36 @@ const DEFAULT_PLACEHOLDER =
 export function ProductQuickViewModal({ product, open, onClose }) {
   const [activeImgIndex, setActiveImgIndex] = useState(0);
   const [show3DModal, setShow3DModal] = useState(false);
+
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    const prevBodyOverscroll = document.body.style.overscrollBehavior;
+    const prevHtmlOverscroll = document.documentElement.style.overscrollBehavior;
+
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overscrollBehavior = "none";
+    document.documentElement.style.overscrollBehavior = "none";
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onClose?.();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.body.style.overscrollBehavior = prevBodyOverscroll;
+      document.documentElement.style.overscrollBehavior = prevHtmlOverscroll;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, onClose]);
 
   if (!open || !product || typeof document === "undefined") return null;
 
@@ -53,7 +83,7 @@ export function ProductQuickViewModal({ product, open, onClose }) {
                 className="quickview-3d-trigger-badge"
                 onClick={() => setShow3DModal(true)}
               >
-                ✨ Xem 3D Đa Chiều
+                🔍 Soi Chi Tiết Phóng To
               </button>
             </div>
 
@@ -112,7 +142,7 @@ export function ProductQuickViewModal({ product, open, onClose }) {
                 className="button button--primary-gold-full"
                 onClick={() => setShow3DModal(true)}
               >
-                ✨ Soi tác phẩm góc xoay 3D
+                🔍 Soi chi tiết tác phẩm (Zoom & Vuốt chạm)
               </button>
 
               <div className="quickview-contact-group">

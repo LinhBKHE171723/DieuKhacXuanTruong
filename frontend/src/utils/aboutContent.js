@@ -4,7 +4,12 @@ const fallbackStoryImages = [
   "https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1600&q=80"
 ];
 
-export const stripHtml = (value = "") => value.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+export const stripHtml = (value = "") =>
+  value
+    .replace(/&nbsp;|\u00A0/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
 export const slugifyText = (value = "") =>
   value

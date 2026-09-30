@@ -1,82 +1,56 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { publicApi } from "../api/publicApi";
 import { EmptyState } from "../components/common/EmptyState";
 import { ErrorState } from "../components/common/ErrorState";
 import { LoadingScreen } from "../components/common/LoadingScreen";
-import { PageHero } from "../components/common/PageHero";
 import { Seo } from "../components/common/Seo";
 import { ProjectCard } from "../components/project/ProjectCard";
-import { ProductFilters } from "../components/product/ProductFilters";
 
 export function ProjectsPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const filters = {
-    search: searchParams.get("search") || "",
-    categoryId: searchParams.get("categoryId") || "",
-    page: searchParams.get("page") || "1"
-  };
-
-  const categoriesQuery = useQuery({
-    queryKey: ["project-categories"],
-    queryFn: () => publicApi.getCategories({ type: "PROJECT", limit: "all" })
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["public-projects"],
+    queryFn: () => publicApi.getProjects({ limit: 12 })
   });
 
-  const projectsQuery = useQuery({
-    queryKey: ["public-projects", filters],
-    queryFn: () => publicApi.getProjects({ ...filters, limit: 9 }),
-    placeholderData: keepPreviousData
-  });
-
-  const updateFilters = (next) => {
-    const params = new URLSearchParams();
-    if (next.search) params.set("search", next.search);
-    if (next.categoryId) params.set("categoryId", next.categoryId);
-    params.set("page", "1");
-    setSearchParams(params, { replace: true, preventScrollReset: true });
-  };
-
-  if (categoriesQuery.isLoading || (projectsQuery.isLoading && !projectsQuery.data)) {
+  if (isLoading) {
     return <LoadingScreen />;
   }
 
-  if (projectsQuery.isError) {
+  if (isError || !data) {
     return <ErrorState />;
   }
 
+  const projects = data.items || [];
+
   return (
     <>
-      <Seo title="Công trình và dự án đã hoàn thiện" description="Tổng hợp các công trình điêu khắc, hoa văn kiến trúc và bê tông mỹ thuật đã thi công." />
-      <PageHero
-        className="page-hero--catalog"
-        eyebrow="Công trình"
-        title="Công trình đã hoàn thiện"
-        description="Hình ảnh thực tế và phạm vi triển khai của từng dự án."
-        imageUrl="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80"
+      <Seo
+        title="Công trình và dự án đã hoàn thiện"
+        description="Tổng hợp các công trình điêu khắc, hoa văn kiến trúc và bê tông mỹ thuật đã thi công."
       />
-      <section className="section section--catalog-mobile">
+      <section className="section projects-page-section">
         <div className="container">
-          <ProductFilters
-            categories={categoriesQuery.data?.items || []}
-            filters={filters}
-            onChange={updateFilters}
-            searchLabel="Tìm công trình"
-          />
-
-          {projectsQuery.isFetching ? (
-            <p className="list-status" aria-live="polite">
-              Đang cập nhật danh sách công trình...
+          {/* Header gọn gàng, tinh tế, vừa vặn tầm mắt */}
+          <div className="projects-compact-header">
+            <span className="projects-compact-header__eyebrow">Công trình</span>
+            <h1 className="projects-compact-header__title">Công trình đã hoàn thiện</h1>
+            <p className="projects-compact-header__desc">
+              Hình ảnh thực tế và phạm vi triển khai của từng dự án.
             </p>
-          ) : null}
+          </div>
 
-          {projectsQuery.data.items.length ? (
+          {/* Danh sách công trình tiêu biểu trực tiếp, không bộ lọc tìm kiếm */}
+          {projects.length ? (
             <div className="card-grid">
-              {projectsQuery.data.items.map((project, index) => (
+              {projects.map((project, index) => (
                 <ProjectCard key={project.id} project={project} delay={index * 0.05} />
               ))}
             </div>
           ) : (
-            <EmptyState title="Không tìm thấy công trình" message="Hãy thử bộ lọc khác để xem các dự án đã hoàn thiện." />
+            <EmptyState
+              title="Đang cập nhật công trình"
+              message="Các dự án và công trình hoàn thiện tiêu biểu sẽ sớm được cập nhật."
+            />
           )}
         </div>
       </section>

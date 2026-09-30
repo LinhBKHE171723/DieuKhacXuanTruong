@@ -1,7 +1,8 @@
 import sanitizeHtml from "sanitize-html";
 
-export const sanitizeRichText = (value = "") =>
-  sanitizeHtml(value, {
+export const sanitizeRichText = (value = "") => {
+  const normalized = String(value || "").replace(/&nbsp;|\u00A0/g, " ");
+  return sanitizeHtml(normalized, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
       "h1",
       "h2",
@@ -21,9 +22,12 @@ export const sanitizeRichText = (value = "") =>
     },
     allowedSchemes: ["http", "https", "data", "mailto", "tel"]
   });
+};
 
-export const sanitizePlainText = (value = "") =>
-  sanitizeHtml(value, {
+export const sanitizePlainText = (value = "") => {
+  const normalized = String(value || "").replace(/&nbsp;|\u00A0/g, " ");
+  return sanitizeHtml(normalized, {
     allowedTags: [],
     allowedAttributes: {}
   }).trim();
+};
