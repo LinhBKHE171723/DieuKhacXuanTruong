@@ -34,6 +34,9 @@ export function FloatingContactWidget({ settings = {} }) {
         </button>
       )}
 
+      {/* Slot for page-specific floating actions (e.g. ProductsPage search & filter FAB) */}
+      <div id="floating-page-slot" className="floating-page-slot" />
+
       {/* Direct Call Button */}
       <a
         href={`tel:${phone}`}

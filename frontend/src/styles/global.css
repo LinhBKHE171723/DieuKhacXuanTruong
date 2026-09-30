@@ -3455,6 +3455,421 @@ p {
   max-width: 900px;
 }
 
+/* ==========================================================================
+   Mobile Product Filter FAB & Bottom Sheet Drawer
+   ========================================================================== */
+
+.floating-page-slot {
+  display: contents;
+}
+
+.catalog-mobile-active-bar {
+  display: none; /* hidden on desktop */
+}
+
+/* Mobile Filter FAB Button - Injected into senior-floating-contact */
+.catalog-mobile-fab {
+  display: none; /* hidden on desktop */
+  position: relative;
+  background: linear-gradient(135deg, #c59b27 0%, #14110d 100%);
+  border: 2px solid #e8d5a7;
+  color: #ffffff;
+}
+
+.catalog-mobile-fab:active {
+  transform: scale(0.92);
+}
+
+.catalog-mobile-fab.is-filtered {
+  border-color: #ffd700;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.6), 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.catalog-mobile-fab__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fcebc7;
+}
+
+.catalog-mobile-fab__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #d32f2f;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Active Bar */
+.catalog-mobile-active-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  background: rgba(197, 155, 39, 0.08);
+  border: 1px solid rgba(197, 155, 39, 0.28);
+  border-radius: 12px;
+}
+
+.catalog-mobile-active-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.mobile-active-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #14110d;
+  color: #f7e6c4;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(197, 155, 39, 0.4);
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-active-chip button {
+  background: transparent;
+  border: none;
+  color: #f7e6c4;
+  font-size: 0.72rem;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.8;
+}
+
+.mobile-active-chip button:hover {
+  opacity: 1;
+  color: #ffd700;
+}
+
+.mobile-active-clear-all {
+  background: transparent;
+  border: none;
+  color: #8c6b16;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 2px 4px;
+  white-space: nowrap;
+}
+
+/* Bottom Sheet Modal Drawer */
+.mobile-filter-drawer-root {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.mobile-filter-drawer__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 12, 9, 0.65);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.mobile-filter-drawer__panel {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  border-radius: 24px 24px 0 0;
+  border-top: 2px solid #d4af37;
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUpMobile 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+@keyframes slideUpMobile {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.mobile-filter-drawer__drag-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 999px;
+  background: #d8ceb8;
+  margin: 10px auto 4px;
+}
+
+.mobile-filter-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 14px;
+  border-bottom: 1px solid rgba(197, 155, 39, 0.18);
+}
+
+.mobile-filter-drawer__title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.mobile-filter-drawer__title {
+  margin: 0;
+  font-family: "Cinzel", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1612;
+}
+
+.mobile-filter-drawer__count {
+  font-size: 0.82rem;
+  color: #8c6b16;
+  font-weight: 600;
+}
+
+.mobile-filter-drawer__close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #f7f3ec;
+  color: #4a4031;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-filter-drawer__close-btn:hover {
+  background: #14110d;
+  color: #ffd700;
+}
+
+.mobile-filter-drawer__body {
+  padding: 16px 20px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mobile-drawer-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-drawer-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-drawer-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #705510;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mobile-drawer-reset-cat {
+  background: transparent;
+  border: none;
+  color: #8c6b16;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.mobile-drawer-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.mobile-drawer-search__input {
+  width: 100%;
+  height: 46px;
+  padding: 0 40px 0 16px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(197, 155, 39, 0.4);
+  background: #fcfbf9;
+  font-size: 16px; /* Prevents auto-zoom on iOS */
+  color: #1a1612;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mobile-drawer-search__input:focus {
+  border-color: #c59b27;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(197, 155, 39, 0.2);
+}
+
+.mobile-drawer-search__clear {
+  position: absolute;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: #dfd8cb;
+  color: #4a4031;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mobile-drawer-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 2px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-cat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(197, 155, 39, 0.3);
+  background: #faf7f2;
+  color: #383025;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-cat-chip.active {
+  background: linear-gradient(135deg, #14110d 0%, #2e261d 100%);
+  border-color: #d4af37;
+  color: #ffd700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-cat-chip__count {
+  font-size: 0.72rem;
+  background: rgba(197, 155, 39, 0.18);
+  color: #705510;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.mobile-cat-chip.active .mobile-cat-chip__count {
+  background: #d4af37;
+  color: #14110d;
+}
+
+.mobile-drawer-views {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.mobile-view-option {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(197, 155, 39, 0.28);
+  background: #faf7f2;
+  color: #4a4031;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.mobile-view-option.active {
+  background: #c59b27;
+  border-color: #c59b27;
+  color: #14110d;
+  font-weight: 800;
+}
+
+.mobile-filter-drawer__footer {
+  display: flex;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid rgba(197, 155, 39, 0.18);
+  background: #ffffff;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+}
+
+.mobile-drawer-clear-btn {
+  flex: 1;
+  height: 48px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(197, 155, 39, 0.4);
+  background: #f7f3ec;
+  color: #4a4031;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-drawer-clear-btn:active {
+  background: #ede6d8;
+}
+
+.mobile-drawer-submit-btn {
+  flex: 2;
+  height: 48px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #c59b27 0%, #14110d 100%);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(197, 155, 39, 0.3);
+  transition: all 0.2s ease;
+}
+
+.mobile-drawer-submit-btn:active {
+  transform: scale(0.98);
+}
+
 /* Category Luxury Grid */
 .category-highlights-section {
   background: linear-gradient(180deg, rgba(15, 13, 11, 0.02) 0%, rgba(197, 155, 39, 0.05) 100%);
@@ -4022,96 +4437,76 @@ html, body {
     border-radius: 12px;
   }
 
-  /* Catalog Category Select Dropdown on Mobile */
+  /* Catalog Mobile Floating Filter FAB - Injected into senior-floating-contact above Phone & Zalo */
+  .catalog-mobile-fab {
+    display: flex !important;
+  }
+
+  .catalog-mobile-active-bar {
+    display: flex !important;
+  }
+
+  /* Hide bulky desktop toolbar, tabs and legacy mobile picker */
   .catalog-category-mobile-picker {
-    display: block !important;
-    margin-bottom: 14px;
-    background: linear-gradient(135deg, #ffffff 0%, #faf6ee 100%);
-    border: 1.5px solid #d4af37;
-    border-radius: 16px;
-    padding: 12px 14px;
-    box-shadow: 0 4px 14px rgba(197, 155, 39, 0.12);
+    display: none !important;
   }
 
-  .catalog-mobile-picker__label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: #8c6b16;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  .catalog-mobile-picker__select-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  .catalog-mobile-picker__select {
-    width: 100%;
-    height: 48px;
-    padding: 0 36px 0 14px;
-    border-radius: 12px;
-    border: 1.5px solid rgba(197, 155, 39, 0.5);
-    background: #ffffff;
-    color: #1c1815;
-    font-size: 0.95rem;
-    font-weight: 700;
-    appearance: none;
-    -webkit-appearance: none;
-    outline: none;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  }
-
-  .catalog-mobile-picker__select:focus {
-    border-color: #c59b27;
-    box-shadow: 0 0 0 3px rgba(197, 155, 39, 0.25);
-  }
-
-  .catalog-mobile-picker__select-wrapper .picker-arrow {
-    position: absolute;
-    right: 14px;
-    pointer-events: none;
-    font-size: 0.85rem;
-    color: #c59b27;
-  }
-
-  /* Hide Desktop Horizontal Tabs Bar on Mobile */
   .catalog-category-tabs-bar {
     display: none !important;
   }
 
-  /* Catalog Top Toolbar Mobile */
-  .section--catalog-compact {
-    padding-top: 14px !important;
-  }
-
   .catalog-unified-toolbar {
-    padding: 10px 12px;
-    gap: 10px;
-    border-radius: 18px;
-    flex-direction: column;
-    align-items: stretch;
-    margin-bottom: 18px;
+    display: none !important;
   }
 
-  .catalog-search-inline {
-    width: 100%;
-    min-width: 0;
-    background: #f7f3ec;
-    border: 1px solid rgba(197, 155, 39, 0.25);
-    border-radius: 999px;
-    padding: 8px 14px;
+  .section--catalog-compact {
+    padding-top: 10px !important;
   }
 
-  .catalog-view-controls {
-    display: flex;
-    justify-content: flex-end;
+  /* Catalog Groups & Category Blocks on Mobile - Super Slim & Direct to Products */
+  .catalog-grouped-sections {
+    gap: 22px !important;
+  }
+
+  .catalog-category-block {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 20px !important;
+  }
+
+  .catalog-category-block__header {
+    margin-bottom: 10px !important;
+    padding-bottom: 6px !important;
+    border-bottom: 1.5px solid rgba(197, 155, 39, 0.22) !important;
+  }
+
+  .catalog-category-block__title-area {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .catalog-category-block__title {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    color: #1a1612 !important;
+    line-height: 1.3 !important;
+  }
+
+  .catalog-category-block__badge {
+    font-size: 0.72rem !important;
+    padding: 2px 8px !important;
+    white-space: nowrap !important;
+    background: rgba(197, 155, 39, 0.12) !important;
+    border-color: rgba(197, 155, 39, 0.3) !important;
+  }
+
+  /* Hide category description paragraph completely on mobile to show products immediately */
+  .catalog-category-block__desc {
+    display: none !important;
   }
 
   /* Product Card Grid Mobile (Balanced 2 columns) */
