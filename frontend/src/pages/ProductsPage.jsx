@@ -10,16 +10,44 @@ import { Seo } from "../components/common/Seo";
 import { ProductCard } from "../components/product/ProductCard";
 import { useProductCategories } from "../hooks/useSiteData";
 
-const popularSearchTags = [
-  "60x85",
-  "40x40",
-  "50x50",
-  "60x60",
-  "D30",
-  "D40",
-  "D50",
-  "Cao 180cm",
-  "80x120"
+const popularTagGroups = [
+  {
+    title: "Phân loại quy cách",
+    tags: [
+      { label: "Cột vuông", query: "Cột vuông" },
+      { label: "Cột tròn", query: "Cột tròn" },
+      { label: "Chân tròn", query: "Chân tròn" },
+      { label: "Ốp mảnh", query: "mảnh" }
+    ]
+  },
+  {
+    title: "Kích thước cột vuông",
+    tags: [
+      { label: "70x90", query: "70x90" },
+      { label: "60x85", query: "60x85" },
+      { label: "55x85", query: "55x85" },
+      { label: "50x45", query: "50x45" },
+      { label: "45x40", query: "45x40" },
+      { label: "40x32", query: "40x32" },
+      { label: "35x32", query: "35x32" },
+      { label: "30x37", query: "30x37" },
+      { label: "25x25", query: "25x25" },
+      { label: "20x24", query: "20x24" }
+    ]
+  },
+  {
+    title: "Kích thước tròn & chân đế",
+    tags: [
+      { label: "10x17", query: "10x17" },
+      { label: "15x22", query: "15x22" },
+      { label: "18x27", query: "18x27" },
+      { label: "20x22", query: "20x22" },
+      { label: "22x25", query: "22x25" },
+      { label: "24x25", query: "24x25" },
+      { label: "Chân tròn 30", query: "Chân tròn 30" },
+      { label: "38x33", query: "38x33" }
+    ]
+  }
 ];
 
 const getCategoryIcon = (name = "") => {
@@ -336,10 +364,24 @@ export function ProductsPage() {
                 </div>
               )
             ) : (
-              <EmptyState
-                title="Không tìm thấy sản phẩm"
-                message="Thử đổi từ khóa tìm kiếm hoặc chọn danh mục khác ở thanh menu trên."
-              />
+              <div className="catalog-empty-block">
+                <EmptyState
+                  title="Không tìm thấy tác phẩm phù hợp"
+                  message="Không có mẫu nào khớp với bộ lọc hoặc kích thước đã chọn. Quý khách có thể bấm nút bên dưới để xem toàn bộ tác phẩm của xưởng."
+                />
+                <div style={{ textAlign: "center", marginTop: "16px" }}>
+                  <button
+                    type="button"
+                    className="button button--primary"
+                    onClick={() => {
+                      setSearchInput("");
+                      updateFilters({ categoryId: "", search: "" });
+                    }}
+                  >
+                    ✕ Bỏ tất cả lọc để xem 35 mẫu
+                  </button>
+                </div>
+              </div>
             )}
 
             {products.length ? (
@@ -479,32 +521,47 @@ export function ProductsPage() {
                   ) : null}
                 </div>
 
-                {/* Quick Keyword Chips */}
-                <div className="modal-quick-tags">
-                  <span className="modal-quick-tags__label">Gợi ý kích thước:</span>
-                  <div className="modal-quick-tags__list">
-                    {popularSearchTags.map((tag) => {
-                      const isActive = searchInput.toLowerCase() === tag.toLowerCase();
-                      return (
-                        <button
-                          key={tag}
-                          type="button"
-                          className={`modal-tag-chip ${isActive ? "active" : ""}`}
-                          onClick={() => {
-                            if (isActive) {
-                              setSearchInput("");
-                              updateFilters({ ...filters, search: "" });
-                            } else {
-                              setSearchInput(tag);
-                              updateFilters({ ...filters, search: tag });
-                            }
-                          }}
-                        >
-                          {tag}
-                        </button>
-                      );
-                    })}
+                {/* Live Match Preview Indicator */}
+                {searchInput ? (
+                  <div className="modal-live-match-indicator">
+                    <span className="modal-live-match-text">
+                      🔍 Tìm thấy <strong>{displayProducts.length}</strong> tác phẩm phù hợp
+                    </span>
                   </div>
+                ) : null}
+
+                {/* Quick Keyword & Dimension Chip Groups */}
+                <div className="modal-quick-tags-container">
+                  {popularTagGroups.map((group) => (
+                    <div key={group.title} className="modal-quick-tags-group">
+                      <span className="modal-quick-tags__group-title">
+                        {group.title}:
+                      </span>
+                      <div className="modal-quick-tags__list">
+                        {group.tags.map((tag) => {
+                          const isActive = searchInput.toLowerCase() === tag.query.toLowerCase();
+                          return (
+                            <button
+                              key={tag.label}
+                              type="button"
+                              className={`modal-tag-chip ${isActive ? "active" : ""}`}
+                              onClick={() => {
+                                if (isActive) {
+                                  setSearchInput("");
+                                  updateFilters({ ...filters, search: "" });
+                                } else {
+                                  setSearchInput(tag.query);
+                                  updateFilters({ ...filters, search: tag.query });
+                                }
+                              }}
+                            >
+                              {isActive ? `✓ ${tag.label}` : tag.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -550,14 +607,16 @@ export function ProductsPage() {
                       <button
                         key={cat.id}
                         type="button"
-                        className={`modal-category-card ${isSelected ? "active" : ""}`}
+                        className={`modal-category-card ${isSelected ? "active" : ""} ${count === 0 ? "modal-category-card--empty" : ""}`}
                         onClick={() => updateFilters({ ...filters, categoryId: isSelected ? "" : cat.id })}
                       >
                         <div className="modal-category-card__left">
                           <span className="modal-category-card__icon">{getCategoryIcon(cat.name)}</span>
                           <div className="modal-category-card__text">
                             <span className="modal-category-card__name">{cat.name}</span>
-                            <span className="modal-category-card__count">{count ? `${count} mẫu` : "Xem tất cả"}</span>
+                            <span className={`modal-category-card__count ${count > 0 ? "has-items" : "no-items"}`}>
+                              {count > 0 ? `${count} mẫu sẵn có` : "Đang cập nhật mẫu"}
+                            </span>
                           </div>
                         </div>
                         <span className="modal-category-card__check">

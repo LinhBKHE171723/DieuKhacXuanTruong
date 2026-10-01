@@ -86,7 +86,13 @@ const buildWhere = async (query = {}, publicOnly = false) => {
     where.categoryId = query.categoryId;
   }
   if (query.search) {
-    const searchRegex = new RegExp(escapeRegex(query.search.trim()), "i");
+    let searchPattern = escapeRegex(query.search.trim());
+    // Allow flexible spacing around dimension separators like 60x85 <-> 60 x 85
+    searchPattern = searchPattern.replace(/(\d+)\s*[xX*]\s*(\d+)/g, "$1\\s*[xX*]\\s*$2");
+    // Allow matching across varied whitespace
+    searchPattern = searchPattern.replace(/\s+/g, "\\s+");
+
+    const searchRegex = new RegExp(searchPattern, "i");
     const matchedCategories = await Category.find({ name: searchRegex }).select("_id");
     const matchedCatIds = matchedCategories.map((c) => c._id);
 

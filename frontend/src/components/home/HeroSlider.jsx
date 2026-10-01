@@ -56,7 +56,7 @@ export function HeroSlider({ banners = [] }) {
                       src={banner.imageUrl}
                       alt={`Banner trang chu ${index + 1}`}
                       loading={index === 0 ? "eager" : "lazy"}
-                      fetchPriority={index === 0 ? "high" : "auto"}
+                      fetchpriority={index === 0 ? "high" : "auto"}
                       decoding="async"
                       width="1280"
                       height="720"

@@ -3744,17 +3744,45 @@ p {
   color: #ffffff;
 }
 
-.modal-quick-tags {
+.modal-live-match-indicator {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  padding: 8px 14px;
+  background: rgba(197, 155, 39, 0.08);
+  border: 1px dashed rgba(197, 155, 39, 0.45);
+  border-radius: 10px;
+  margin-top: 4px;
 }
 
-.modal-quick-tags__label {
-  font-size: 0.78rem;
-  font-weight: 700;
+.modal-live-match-text {
+  font-size: 0.85rem;
+  color: #5c4c34;
+}
+
+.modal-live-match-text strong {
+  color: #947113;
+  font-weight: 800;
+}
+
+.modal-quick-tags-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.modal-quick-tags-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-quick-tags__group-title {
+  font-size: 0.76rem;
+  font-weight: 800;
   color: #8c6b16;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .modal-quick-tags__list {
@@ -3764,28 +3792,31 @@ p {
 }
 
 .modal-tag-chip {
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(197, 155, 39, 0.25);
+  border: 1.5px solid rgba(197, 155, 39, 0.3);
   background: #ffffff;
-  color: #594f43;
-  font-size: 0.78rem;
+  color: #4a4033;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-tag-chip:hover {
   border-color: #c59b27;
   color: #14110d;
-  background: #faf4e6;
+  background: #faf3e2;
+  transform: translateY(-1px);
 }
 
 .modal-tag-chip.active {
-  background: #c59b27;
-  color: #14110d;
-  border-color: #c59b27;
+  background: #14110d;
+  color: #ffd700;
+  border-color: #ffd700;
   font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
 }
 
 /* 2-Column Categories Grid */
@@ -3867,6 +3898,21 @@ p {
 
 .modal-category-card.active .modal-category-card__count {
   color: #e8d5a7;
+}
+
+.modal-category-card--empty {
+  opacity: 0.85;
+}
+
+.modal-category-card__count.no-items {
+  color: #9c9182;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.modal-category-card__count.has-items {
+  color: #8c6b16;
+  font-weight: 700;
 }
 
 .modal-category-card__check {
@@ -4767,27 +4813,54 @@ html, body {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 99999;
+  z-index: 9000;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  align-items: flex-end;
 }
 
 .floating-btn {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
-  border-radius: 999px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  animation: pulseFloat 3.5s infinite ease-in-out;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.floating-btn:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+.floating-btn .floating-btn__icon {
+  flex-shrink: 0;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-btn .floating-btn__label {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .floating-btn:hover {
+    width: auto;
+    padding: 0 16px 0 14px;
+    border-radius: 999px;
+    justify-content: flex-start;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38);
+    gap: 8px;
+  }
+
+  .floating-btn:hover .floating-btn__label {
+    display: flex;
+  }
 }
 
 .floating-btn--phone {
@@ -4989,23 +5062,6 @@ html, body {
   .senior-search-card {
     padding: 20px 16px;
     border-radius: 20px;
-  }
-
-  .senior-floating-contact {
-    bottom: 16px;
-    right: 16px;
-  }
-
-  .floating-btn {
-    padding: 10px 16px;
-  }
-
-  .floating-btn__label small {
-    display: none;
-  }
-
-  .floating-btn__label strong {
-    font-size: 0.92rem;
   }
 }
 
