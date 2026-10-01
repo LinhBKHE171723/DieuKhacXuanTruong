@@ -119,7 +119,7 @@ export function ProductsPage() {
     queryKey: ["public-products", filters],
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
-      publicApi.getProducts({ ...filters, page: pageParam, limit: 24 }),
+      publicApi.getProducts({ ...filters, page: pageParam, limit: 36 }),
     placeholderData: (previousData) => previousData,
     getNextPageParam: (lastPage) => {
       const pagination = lastPage?.pagination;
@@ -297,9 +297,6 @@ export function ProductsPage() {
                           <h2 className="catalog-category-block__title">
                             {group.category.name}
                           </h2>
-                          <span className="catalog-category-block__badge">
-                            {group.items.length} mẫu sản phẩm
-                          </span>
                           {group.category.id !== "other" && (
                             <button
                               type="button"
