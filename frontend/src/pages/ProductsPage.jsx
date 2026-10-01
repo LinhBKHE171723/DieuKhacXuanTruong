@@ -10,11 +10,36 @@ import { Seo } from "../components/common/Seo";
 import { ProductCard } from "../components/product/ProductCard";
 import { useProductCategories } from "../hooks/useSiteData";
 
+const popularSearchTags = [
+  "60x85",
+  "40x40",
+  "50x50",
+  "60x60",
+  "D30",
+  "D40",
+  "D50",
+  "Cao 180cm",
+  "80x120"
+];
+
+const getCategoryIcon = (name = "") => {
+  const lower = name.toLowerCase();
+  if (lower.includes("cột") || lower.includes("đấu")) return "🏛️";
+  if (lower.includes("phù điêu") || lower.includes("hoa văn")) return "⚜️";
+  if (lower.includes("phào") || lower.includes("chỉ")) return "🪟";
+  if (lower.includes("tượng")) return "🗿";
+  if (lower.includes("con tiện") || lower.includes("lục bình")) return "🏺";
+  if (lower.includes("trần") || lower.includes("mâm")) return "☸️";
+  if (lower.includes("góc") || lower.includes("con bọ")) return "📐";
+  return "🏛️";
+};
+
 export function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoriesQuery = useProductCategories();
   const loadMoreRef = useRef(null);
-  const [viewMode, setViewMode] = useState("grid"); // "grid" | "list"
+  const modalSearchInputRef = useRef(null);
+  const viewMode = "grid";
 
   const filters = {
     search: searchParams.get("search") || "",
@@ -29,7 +54,7 @@ export function ProductsPage() {
     setSearchInput(filters.search);
   }, [filters.search]);
 
-  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [slotEl, setSlotEl] = useState(() =>
     typeof document !== "undefined" ? document.getElementById("floating-page-slot") : null
   );
@@ -41,21 +66,37 @@ export function ProductsPage() {
     }
   }, [slotEl]);
 
-  // Lock body scroll on mobile when filter drawer is open
+  // Global hotkey Ctrl+K to toggle filter & search modal
   useEffect(() => {
-    if (mobileFilterOpen) {
+    const handleGlobalKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setFilterModalOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, []);
+
+  // Lock body scroll & focus search input when filter modal is open
+  useEffect(() => {
+    if (filterModalOpen) {
       document.body.style.overflow = "hidden";
+      const timer = setTimeout(() => {
+        modalSearchInputRef.current?.focus();
+      }, 100);
       const handleKeyDown = (e) => {
-        if (e.key === "Escape") setMobileFilterOpen(false);
+        if (e.key === "Escape") setFilterModalOpen(false);
       };
       window.addEventListener("keydown", handleKeyDown);
       return () => {
+        clearTimeout(timer);
         document.body.style.overflow = "";
         window.removeEventListener("keydown", handleKeyDown);
       };
     }
     document.body.style.overflow = "";
-  }, [mobileFilterOpen]);
+  }, [filterModalOpen]);
 
   const updateFilters = (next) => {
     const params = new URLSearchParams();
@@ -114,6 +155,44 @@ export function ProductsPage() {
     productsQuery.isFetchingNextPage,
   ]);
 
+  const pages = productsQuery.data?.pages || [];
+  const products = pages.flatMap((page) => page.items || []);
+  const categories = categoriesQuery.data?.items || [];
+  const totalItems = pages[0]?.pagination?.totalItems || products.length;
+
+  const activeCategory = categories.find((cat) => cat.id === filters.categoryId);
+  const hasActiveFilter = Boolean(filters.categoryId || filters.search);
+  const activeFilterCount = (filters.categoryId ? 1 : 0) + (filters.search ? 1 : 0);
+
+  const displayProducts = products;
+
+  // Group products by Category/Model when viewing all items without a search query
+  const isBrowsingAll = !filters.categoryId && !filters.search;
+  const groupedProducts = useMemo(() => {
+    if (!isBrowsingAll) return null;
+    const map = new Map();
+    for (const cat of categories) {
+      map.set(cat.id, { category: cat, items: [] });
+    }
+    const unclassified = [];
+    for (const prod of displayProducts) {
+      const catId = prod.categoryId || prod.category?.id;
+      if (catId && map.has(catId)) {
+        map.get(catId).items.push(prod);
+      } else {
+        unclassified.push(prod);
+      }
+    }
+    const groups = Array.from(map.values()).filter((g) => g.items.length > 0);
+    if (unclassified.length > 0) {
+      groups.push({
+        category: { id: "other", name: "Sản phẩm khác", slug: "other" },
+        items: unclassified,
+      });
+    }
+    return groups;
+  }, [isBrowsingAll, categories, displayProducts]);
+
   // Initial full-page loading only when there is zero data
   if (categoriesQuery.isLoading && !categoriesQuery.data) {
     return <LoadingScreen />;
@@ -127,41 +206,7 @@ export function ProductsPage() {
     return <ErrorState />;
   }
 
-  const pages = productsQuery.data?.pages || [];
-  const products = pages.flatMap((page) => page.items || []);
-  const categories = categoriesQuery.data?.items || [];
-  const totalItems = pages[0]?.pagination?.totalItems || products.length;
-
-  const activeCategory = categories.find((cat) => cat.id === filters.categoryId);
-  const hasActiveFilter = Boolean(filters.categoryId || filters.search);
-  const activeFilterCount = (filters.categoryId ? 1 : 0) + (filters.search ? 1 : 0);
-
-  // Group products by Category/Model when viewing all items without a search query
-  const isBrowsingAll = !filters.categoryId && !filters.search;
-  const groupedProducts = (() => {
-    if (!isBrowsingAll) return null;
-    const map = new Map();
-    for (const cat of categories) {
-      map.set(cat.id, { category: cat, items: [] });
-    }
-    const unclassified = [];
-    for (const prod of products) {
-      const catId = prod.categoryId || prod.category?.id;
-      if (catId && map.has(catId)) {
-        map.get(catId).items.push(prod);
-      } else {
-        unclassified.push(prod);
-      }
-    }
-    const groups = Array.from(map.values()).filter((g) => g.items.length > 0);
-    if (unclassified.length > 0) {
-      groups.push({
-        category: { id: "other", name: "Sản phẩm khác", slug: "other" },
-        items: unclassified
-      });
-    }
-    return groups;
-  })();
+  const gridClassName = "card-grid--full-width";
 
   return (
     <>
@@ -172,16 +217,18 @@ export function ProductsPage() {
 
       <section className="section section--catalog-compact">
         <div className="container container--wide">
-          {/* Mobile Active Filter Quick Bar (Chỉ hiển thị khi đang lọc/tìm kiếm, chỉ tốn 32px chiều cao) */}
+          {/* Active Filter Bar (Chỉ hiển thị khi đang lọc hoặc tìm kiếm) */}
           {hasActiveFilter ? (
-            <div className="catalog-mobile-active-bar">
-              <div className="catalog-mobile-active-chips">
+            <div className="catalog-active-filter-bar">
+              <div className="catalog-active-filter-chips">
+                <span className="active-filter-label">Đang lọc:</span>
                 {filters.categoryId && activeCategory ? (
-                  <span className="mobile-active-chip">
-                    {activeCategory.name}
+                  <span className="active-chip">
+                    <span>{getCategoryIcon(activeCategory.name)} {activeCategory.name}</span>
                     <button
                       type="button"
                       onClick={() => updateFilters({ ...filters, categoryId: "" })}
+                      title="Bỏ lọc danh mục"
                       aria-label="Bỏ chọn danh mục"
                     >
                       ✕
@@ -189,14 +236,15 @@ export function ProductsPage() {
                   </span>
                 ) : null}
                 {filters.search ? (
-                  <span className="mobile-active-chip">
-                    "{filters.search}"
+                  <span className="active-chip">
+                    <span>🔍 "{filters.search}"</span>
                     <button
                       type="button"
                       onClick={() => {
                         setSearchInput("");
                         updateFilters({ ...filters, search: "" });
                       }}
+                      title="Xóa từ khóa"
                       aria-label="Xóa từ khóa tìm kiếm"
                     >
                       ✕
@@ -204,115 +252,33 @@ export function ProductsPage() {
                   </span>
                 ) : null}
               </div>
-              <button
-                type="button"
-                className="mobile-active-clear-all"
-                onClick={() => {
-                  setSearchInput("");
-                  updateFilters({ categoryId: "", search: "" });
-                }}
-              >
-                Xóa lọc
-              </button>
-            </div>
-          ) : null}
-
-          {/* Desktop Horizontal Tabs Bar (Ẩn trên mobile <= 768px, hiển thị trên desktop > 768px) */}
-          <div className="catalog-category-tabs-bar" role="tablist" aria-label="Danh mục sản phẩm">
-            <button
-              type="button"
-              className={`catalog-cat-tab ${!filters.categoryId ? "active" : ""}`}
-              onClick={() => updateFilters({ ...filters, categoryId: "" })}
-            >
-              ✨ Tất cả danh mục ({totalItems})
-            </button>
-            {categories.map((cat) => {
-              const count = cat.productCount;
-              return (
-                <button
-                  key={cat.id}
-                  type="button"
-                  className={`catalog-cat-tab ${filters.categoryId === cat.id ? "active" : ""}`}
-                  onClick={() => updateFilters({ ...filters, categoryId: cat.id })}
-                >
-                  {cat.name} {count ? `(${count})` : ""}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* 2. Streamlined Search & View Mode Toolbar (Responsive, Clean & Lightweight) */}
-          <div className="catalog-unified-toolbar">
-            {/* Search Input with debounce & clear icon */}
-            <div className="catalog-search-inline">
-              <span className="search-inline-icon">🔍</span>
-              <input
-                type="text"
-                className="search-inline-input"
-                placeholder="Tìm kiếm mẫu sản phẩm hoặc kích thước (vd: Cột vuông, 60x85...)"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
-              {searchInput && (
-                <button
-                  type="button"
-                  className="search-inline-clear"
-                  onClick={() => {
-                    setSearchInput("");
-                    updateFilters({ ...filters, search: "" });
-                  }}
-                  title="Xóa từ khóa"
-                  aria-label="Xóa từ khóa tìm kiếm"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-
-            {/* View Mode Switcher (Grid / List) */}
-            <div className="catalog-view-controls">
-              <div className="view-mode-buttons">
-                <button
-                  type="button"
-                  className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
-                  onClick={() => setViewMode("grid")}
-                  title="Chế độ Lưới"
-                >
-                  ▦ Lưới
-                </button>
-                <button
-                  type="button"
-                  className={`view-btn ${viewMode === "list" ? "active" : ""}`}
-                  onClick={() => setViewMode("list")}
-                  title="Chế độ Danh sách"
-                >
-                  ☰ Danh sách
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Full Width Catalog Product List */}
-          <div className="catalog-full-content">
-            {/* Show search notification bar ONLY when a search keyword is active */}
-            {filters.search ? (
-              <div className="catalog-search-status-bar">
-                <span>
-                  Kết quả tìm kiếm cho: <strong>"{filters.search}"</strong> ({products.length} tác phẩm)
+              <div className="catalog-active-filter-actions">
+                <span className="active-filter-count">
+                  Hiển thị <strong>{displayProducts.length}</strong> tác phẩm
                 </span>
                 <button
                   type="button"
-                  className="clear-search-chip"
+                  className="active-filter-edit-btn"
+                  onClick={() => setFilterModalOpen(true)}
+                >
+                  ⚙️ Đổi bộ lọc
+                </button>
+                <button
+                  type="button"
+                  className="active-filter-clear-all"
                   onClick={() => {
                     setSearchInput("");
-                    updateFilters({ ...filters, search: "" });
+                    updateFilters({ categoryId: "", search: "" });
                   }}
                 >
-                  ✕ Bỏ từ khóa
+                  ✕ Bỏ lọc
                 </button>
               </div>
-            ) : null}
+            </div>
+          ) : null}
 
+          {/* Full Width Catalog Product List */}
+          <div className="catalog-full-content">
             {productsQuery.isFetching && !productsQuery.isFetchingNextPage ? (
               <p className="list-status" aria-live="polite">
                 Đang cập nhật danh sách tác phẩm...
@@ -320,7 +286,7 @@ export function ProductsPage() {
             ) : null}
 
             {/* Product List Render: Grouped by Category OR Filtered Grid */}
-            {products.length ? (
+            {displayProducts.length ? (
               isBrowsingAll && groupedProducts && groupedProducts.length ? (
                 /* Grouped by Category View */
                 <div className="catalog-grouped-sections">
@@ -332,23 +298,27 @@ export function ProductsPage() {
                             {group.category.name}
                           </h2>
                           <span className="catalog-category-block__badge">
-                            {group.items.length} kích thước quy cách
+                            {group.items.length} mẫu sản phẩm
                           </span>
+                          {group.category.id !== "other" && (
+                            <button
+                              type="button"
+                              className="catalog-category-block__filter-link"
+                              onClick={() => updateFilters({ ...filters, categoryId: group.category.id })}
+                            >
+                              Xem riêng {group.category.name} →
+                            </button>
+                          )}
                         </div>
-                        {group.category.description ? (
-                          <p className="catalog-category-block__desc">
-                            {group.category.description}
-                          </p>
-                        ) : null}
                       </div>
 
-                      <div className={viewMode === "list" ? "card-list--catalog" : "card-grid--full-width"}>
+                      <div className={gridClassName}>
                         {group.items.map((product, index) => (
                           <ProductCard
                             key={product.id}
                             product={product}
                             delay={index * 0.015}
-                            viewMode={viewMode}
+                            viewMode={viewMode === "list" ? "list" : "grid"}
                           />
                         ))}
                       </div>
@@ -357,13 +327,13 @@ export function ProductsPage() {
                 </div>
               ) : (
                 /* Filtered or Single-Category List */
-                <div className={viewMode === "list" ? "card-list--catalog" : "card-grid--full-width"}>
-                  {products.map((product, index) => (
+                <div className={gridClassName}>
+                  {displayProducts.map((product, index) => (
                     <ProductCard
                       key={product.id}
                       product={product}
                       delay={index * 0.015}
-                      viewMode={viewMode}
+                      viewMode={viewMode === "list" ? "list" : "grid"}
                     />
                   ))}
                 </div>
@@ -400,17 +370,17 @@ export function ProductsPage() {
         </div>
       </section>
 
-      {/* Mobile Floating Action Button (FAB) for Search & Filters - Grouped on the right side above Phone & Zalo */}
+      {/* Floating Action Button (FAB) for Search & Filters - Grouped on the right side above Phone & Zalo */}
       {slotEl
         ? createPortal(
             <button
               type="button"
-              className={`floating-btn catalog-mobile-fab ${hasActiveFilter ? "is-filtered" : ""}`}
-              onClick={() => setMobileFilterOpen(true)}
-              title="Lọc danh mục & tìm kiếm tác phẩm"
+              className={`floating-btn catalog-filter-fab ${hasActiveFilter ? "is-filtered" : ""}`}
+              onClick={() => setFilterModalOpen(true)}
+              title="Lọc danh mục & tìm kiếm tác phẩm (Ctrl + K)"
               aria-label="Mở bộ lọc danh mục và tìm kiếm"
             >
-              <span className="floating-btn__icon catalog-mobile-fab__icon">
+              <span className="floating-btn__icon catalog-filter-fab__icon">
                 <svg
                   width="22"
                   height="22"
@@ -431,7 +401,7 @@ export function ProductsPage() {
               </span>
               {hasActiveFilter ? (
                 <span
-                  className="catalog-mobile-fab__badge"
+                  className="catalog-filter-fab__badge"
                   aria-label={`${activeFilterCount} bộ lọc đang kích hoạt`}
                 >
                   {activeFilterCount}
@@ -442,57 +412,65 @@ export function ProductsPage() {
           )
         : null}
 
-      {/* Mobile Filter & Search Bottom Sheet Modal */}
-      {mobileFilterOpen && (
+      {/* Unified Filter & Search Modal (Centered luxury modal on desktop/laptop, smooth bottom sheet on mobile) */}
+      {filterModalOpen && (
         <div
-          className="mobile-filter-drawer-root"
+          className="catalog-modal-root"
           role="dialog"
           aria-modal="true"
           aria-label="Bộ lọc và tìm kiếm tác phẩm"
         >
           <div
-            className="mobile-filter-drawer__backdrop"
-            onClick={() => setMobileFilterOpen(false)}
+            className="catalog-modal__backdrop"
+            onClick={() => setFilterModalOpen(false)}
           />
-          <div className="mobile-filter-drawer__panel">
-            <div className="mobile-filter-drawer__drag-handle" />
+          <div className="catalog-modal__dialog">
+            {/* Mobile drag handle */}
+            <div className="catalog-modal__drag-handle" />
 
-            <div className="mobile-filter-drawer__header">
-              <div className="mobile-filter-drawer__title-group">
-                <h3 className="mobile-filter-drawer__title">Lọc & Tìm kiếm</h3>
-                <span className="mobile-filter-drawer__count">
-                  {products.length} mẫu sản phẩm
-                </span>
+            {/* Header */}
+            <div className="catalog-modal__header">
+              <div className="catalog-modal__header-titles">
+                <h3 className="catalog-modal__title">
+                  🏛️ Tìm Kiếm & Lọc Tác Phẩm
+                </h3>
+                <p className="catalog-modal__subtitle">
+                  Chọn phân loại kiến trúc hoặc tìm nhanh mẫu điêu khắc, kích thước phù hợp
+                </p>
               </div>
               <button
                 type="button"
-                className="mobile-filter-drawer__close-btn"
-                onClick={() => setMobileFilterOpen(false)}
+                className="catalog-modal__close-btn"
+                onClick={() => setFilterModalOpen(false)}
                 aria-label="Đóng bộ lọc"
+                title="Đóng (Esc)"
               >
                 ✕
               </button>
             </div>
 
-            <div className="mobile-filter-drawer__body">
-              {/* Search section */}
-              <div className="mobile-drawer-group">
-                <label className="mobile-drawer-label" htmlFor="drawer-search-input">
+            {/* Body */}
+            <div className="catalog-modal__body">
+              {/* Section 1: Search Input */}
+              <div className="catalog-modal__section">
+                <label className="modal-section-label" htmlFor="catalog-modal-search">
                   🔍 Tìm kiếm theo tên hoặc kích thước
                 </label>
-                <div className="mobile-drawer-search">
+                <div className="modal-search-box">
+                  <span className="modal-search-box__icon">🔍</span>
                   <input
-                    id="drawer-search-input"
+                    id="catalog-modal-search"
+                    ref={modalSearchInputRef}
                     type="text"
-                    className="mobile-drawer-search__input"
-                    placeholder="Vd: Cột vuông, 60x85, hoa văn..."
+                    className="modal-search-box__input"
+                    placeholder="Vd: 60x85, D40, đầu cột, phù điêu..."
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                   />
                   {searchInput ? (
                     <button
                       type="button"
-                      className="mobile-drawer-search__clear"
+                      className="modal-search-box__clear"
                       onClick={() => {
                         setSearchInput("");
                         updateFilters({ ...filters, search: "" });
@@ -503,91 +481,123 @@ export function ProductsPage() {
                     </button>
                   ) : null}
                 </div>
+
+                {/* Quick Keyword Chips */}
+                <div className="modal-quick-tags">
+                  <span className="modal-quick-tags__label">Gợi ý kích thước:</span>
+                  <div className="modal-quick-tags__list">
+                    {popularSearchTags.map((tag) => {
+                      const isActive = searchInput.toLowerCase() === tag.toLowerCase();
+                      return (
+                        <button
+                          key={tag}
+                          type="button"
+                          className={`modal-tag-chip ${isActive ? "active" : ""}`}
+                          onClick={() => {
+                            if (isActive) {
+                              setSearchInput("");
+                              updateFilters({ ...filters, search: "" });
+                            } else {
+                              setSearchInput(tag);
+                              updateFilters({ ...filters, search: tag });
+                            }
+                          }}
+                        >
+                          {tag}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
 
-              {/* Categories Section */}
-              <div className="mobile-drawer-group">
-                <div className="mobile-drawer-group-head">
-                  <span className="mobile-drawer-label">🏛️ Chọn danh mục sản phẩm</span>
+              {/* Section 2: Categories 2-Column Grid */}
+              <div className="catalog-modal__section">
+                <div className="modal-section-head">
+                  <span className="modal-section-label">🏛️ Phân loại danh mục kiến trúc</span>
                   {filters.categoryId ? (
                     <button
                       type="button"
-                      className="mobile-drawer-reset-cat"
+                      className="modal-section-action-btn"
                       onClick={() => updateFilters({ ...filters, categoryId: "" })}
                     >
-                      Xem tất cả
+                      Xem tất cả danh mục
                     </button>
-                  ) : null}
+                  ) : (
+                    <span className="modal-section-hint">Tất cả {categories.length} danh mục</span>
+                  )}
                 </div>
-                <div className="mobile-drawer-chips">
+
+                <div className="modal-categories-grid">
                   <button
                     type="button"
-                    className={`mobile-cat-chip ${!filters.categoryId ? "active" : ""}`}
+                    className={`modal-category-card ${!filters.categoryId ? "active" : ""}`}
                     onClick={() => updateFilters({ ...filters, categoryId: "" })}
                   >
-                    <span>✨ Tất cả</span>
-                    <span className="mobile-cat-chip__count">{totalItems}</span>
+                    <div className="modal-category-card__left">
+                      <span className="modal-category-card__icon">✨</span>
+                      <div className="modal-category-card__text">
+                        <span className="modal-category-card__name">Tất cả danh mục</span>
+                        <span className="modal-category-card__count">{totalItems} mẫu sản phẩm</span>
+                      </div>
+                    </div>
+                    <span className="modal-category-card__check">
+                      {!filters.categoryId ? "✓" : ""}
+                    </span>
                   </button>
+
                   {categories.map((cat) => {
                     const isSelected = filters.categoryId === cat.id;
+                    const count = cat.productCount || 0;
                     return (
                       <button
                         key={cat.id}
                         type="button"
-                        className={`mobile-cat-chip ${isSelected ? "active" : ""}`}
-                        onClick={() => updateFilters({ ...filters, categoryId: cat.id })}
+                        className={`modal-category-card ${isSelected ? "active" : ""}`}
+                        onClick={() => updateFilters({ ...filters, categoryId: isSelected ? "" : cat.id })}
                       >
-                        <span>{cat.name}</span>
-                        {cat.productCount ? (
-                          <span className="mobile-cat-chip__count">{cat.productCount}</span>
-                        ) : null}
+                        <div className="modal-category-card__left">
+                          <span className="modal-category-card__icon">{getCategoryIcon(cat.name)}</span>
+                          <div className="modal-category-card__text">
+                            <span className="modal-category-card__name">{cat.name}</span>
+                            <span className="modal-category-card__count">{count ? `${count} mẫu` : "Xem tất cả"}</span>
+                          </div>
+                        </div>
+                        <span className="modal-category-card__check">
+                          {isSelected ? "✓" : ""}
+                        </span>
                       </button>
                     );
                   })}
                 </div>
               </div>
-
-              {/* View Mode */}
-              <div className="mobile-drawer-group">
-                <span className="mobile-drawer-label">👁️ Chế độ xem</span>
-                <div className="mobile-drawer-views">
-                  <button
-                    type="button"
-                    className={`mobile-view-option ${viewMode === "grid" ? "active" : ""}`}
-                    onClick={() => setViewMode("grid")}
-                  >
-                    ▦ Lưới 2 cột
-                  </button>
-                  <button
-                    type="button"
-                    className={`mobile-view-option ${viewMode === "list" ? "active" : ""}`}
-                    onClick={() => setViewMode("list")}
-                  >
-                    ☰ Danh sách chi tiết
-                  </button>
-                </div>
-              </div>
             </div>
 
-            <div className="mobile-filter-drawer__footer">
+            {/* Footer */}
+            <div className="catalog-modal__footer">
               {hasActiveFilter ? (
                 <button
                   type="button"
-                  className="mobile-drawer-clear-btn"
+                  className="modal-footer__clear-btn"
                   onClick={() => {
                     setSearchInput("");
                     updateFilters({ categoryId: "", search: "" });
                   }}
                 >
-                  ✕ Bỏ lọc
+                  ✕ Bỏ tất cả lọc
                 </button>
-              ) : null}
+              ) : (
+                <span className="modal-footer__status">
+                  Đang hiển thị {displayProducts.length} tác phẩm
+                </span>
+              )}
+
               <button
                 type="button"
-                className="mobile-drawer-submit-btn"
-                onClick={() => setMobileFilterOpen(false)}
+                className="modal-footer__apply-btn"
+                onClick={() => setFilterModalOpen(false)}
               >
-                Áp dụng & Xem ({products.length})
+                Áp dụng & Xem ({displayProducts.length} tác phẩm) →
               </button>
             </div>
           </div>
