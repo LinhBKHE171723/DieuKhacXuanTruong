@@ -15,9 +15,9 @@ export function WhyChooseUs({ sections = {} }) {
     <section className="section why-choose-section-luxury">
       <div className="container">
         <SectionTitle
-          eyebrow="Lợi Thế Nổi Bật"
-          title={sections.reasonTitle || "Tại Sao Chủ Đầu Tư Lựa Chọn Điêu Khắc Xuân Trường?"}
-          description="Sự kết hợp giữa tay nghề nghệ nhân gia truyền, công nghệ dựng khuôn đúc hiện đại và cam kết chất lượng dài lâu."
+          eyebrow="Thế mạnh của xưởng"
+          title={sections.reasonTitle || "Vì sao chọn Điêu Khắc Xuân Trường?"}
+          description="Kết hợp chế tác tại xưởng và thi công tại công trình, phù hợp với từng hạng mục kiến trúc."
           size="compact"
           align="center"
         />

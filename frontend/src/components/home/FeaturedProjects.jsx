@@ -9,8 +9,8 @@ export function FeaturedProjects({ projects = [] }) {
     <section className="section featured-projects-luxury">
       <div className="container container--wide">
         <SectionTitle
-          eyebrow="Công Trình Thực Tế"
-          title="Dự Án Thi Công Điêu Khắc & Hoa Văn Đã Hoàn Thiện"
+          eyebrow="Công trình thực tế"
+          title="Công trình điêu khắc và hoa văn"
           description="Hình ảnh thực tế thi công phù điêu, cột cổng, vòm cửa và linh vật tại các biệt thự, đền thờ và công trình công cộng."
           size="compact"
           align="center"

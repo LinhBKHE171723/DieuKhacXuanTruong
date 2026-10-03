@@ -68,7 +68,7 @@ export function HeaderSearchModal({ open, onClose }) {
           <input
             type="text"
             className="header-search-input"
-            placeholder="Tìm kiếm tác phẩm điêu khắc, phù điêu, hoa văn..."
+            placeholder="Tìm kiếm sản phẩm điêu khắc, phù điêu, hoa văn..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
@@ -90,11 +90,11 @@ export function HeaderSearchModal({ open, onClose }) {
         {/* Live Search Results Suggestion */}
         <div className="header-search-results-panel">
           {isLoading ? (
-            <div className="header-search-loading">Đang tìm kiếm tác phẩm...</div>
+            <div className="header-search-loading">Đang tìm kiếm sản phẩm...</div>
           ) : results.length > 0 ? (
             <div className="header-search-results-list">
               <span className="header-search-section-label">
-                Gợi ý tác phẩm ({results.length})
+                Gợi ý sản phẩm ({results.length})
               </span>
               {results.map((product) => (
                 <Link

@@ -439,8 +439,8 @@ export function ImageLightbox({
           />
 
           <div className="art-3d-hint zoom-interactive-hint">
-            <span className="hint-desktop">💡 Cuộn chuột để zoom • Kéo chuột để soi chi tiết hoa văn</span>
-            <span className="hint-mobile">📱 Vuốt 2 ngón tay để zoom • Chạm đúp để phóng to • Kéo để soi hoa văn</span>
+            <span className="hint-desktop">💡 Cuộn chuột để phóng to • Kéo để di chuyển ảnh</span>
+            <span className="hint-mobile">📱 Chụm hoặc mở hai ngón tay để thu phóng • Kéo để di chuyển ảnh</span>
           </div>
         </div>
 

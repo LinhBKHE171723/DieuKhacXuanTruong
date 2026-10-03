@@ -79,9 +79,9 @@ export function Header({ settings = {} }) {
             type="button"
             className="site-nav__search-btn desktop-only-search"
             onClick={() => setSearchOpen(true)}
-            title="Tìm kiếm tác phẩm"
+            title="Tìm kiếm sản phẩm"
           >
-            <span>🔍</span> Tìm tác phẩm...
+            <span>🔍</span> Tìm sản phẩm...
           </button>
 
           <a className="button button--primary site-nav__cta" href={`tel:${settings.hotline || "0909888668"}`}>
@@ -95,7 +95,7 @@ export function Header({ settings = {} }) {
             type="button"
             className="mobile-search-btn"
             onClick={() => setSearchOpen(true)}
-            aria-label="Tìm kiếm tác phẩm"
+            aria-label="Tìm kiếm sản phẩm"
           >
             🔍
           </button>

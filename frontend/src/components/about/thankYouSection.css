@@ -1,0 +1,13 @@
+.thank-you-section { background: #78694f; color: #fffaf1; }
+.thank-you-section__layout { display: grid; grid-template-columns: 1.2fr .8fr; align-items: center; gap: clamp(24px, 5vw, 72px); }
+.thank-you-section__copy { min-width: 0; }
+.thank-you-section__eyebrow { font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; }
+.thank-you-section h2 { font-size: clamp(2rem, 4vw, 3.8rem); line-height: 1.15; margin: 18px 0 26px; }
+.thank-you-section p { color: #fffaf1; margin-bottom: 18px; line-height: 1.8; }
+.thank-you-section .button { margin-top: 12px; background: #fff5df; color: #392d1c; }
+.thank-you-section__image { width: 100%; height: auto; max-height: 620px; object-fit: contain; border-radius: 20px; }
+@media (max-width: 768px) {
+  .thank-you-section__layout { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .thank-you-section__image { max-height: 480px; }
+  .thank-you-section .button { width: 100%; }
+}

@@ -82,8 +82,8 @@ export function ProductDetailPage() {
         <section className="section section--soft related-products-showcase">
           <div className="container container--wide">
             <div className="section-title">
-              <span className="section-title__eyebrow">Cùng quy cách mẫu mã</span>
-              <h2>Sản phẩm cùng nhóm ({data.relatedProducts.length} mẫu kích thước)</h2>
+              <span className="section-title__eyebrow">Tham khảo thêm</span>
+              <h2>Sản phẩm liên quan ({data.relatedProducts.length} mẫu)</h2>
             </div>
             <div className="card-grid--full-width">
               {data.relatedProducts.slice(0, visibleRelated).map((product, index) => (
@@ -98,7 +98,7 @@ export function ProductDetailPage() {
                   className="button button--ghost"
                   onClick={() => setVisibleRelated((prev) => prev + 4)}
                 >
-                  ↓ Xem thêm quy cách khác (còn {data.relatedProducts.length - visibleRelated} mẫu)
+                  ↓ Xem thêm sản phẩm (còn {data.relatedProducts.length - visibleRelated} mẫu)
                 </button>
               </div>
             ) : data.categoryId || data.category?.id ? (

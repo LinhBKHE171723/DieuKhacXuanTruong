@@ -9,9 +9,9 @@ export function FeaturedProducts({ products = [] }) {
     <section className="section section--soft featured-showcase-luxury">
       <div className="container container--wide">
         <SectionTitle
-          eyebrow="Tác phẩm Nổi bật"
-          title="Bộ Sưu Tập Tác Phẩm Điêu Khắc Tiêu Biểu"
-          description="Những thiết kế hoa văn, tượng nghệ thuật và phù điêu tân cổ điển được lựa chọn nhiều nhất cho biệt thự và công trình sang trọng."
+          eyebrow="Sản phẩm nổi bật"
+          title="Mẫu điêu khắc và hoa văn tiêu biểu"
+          description="Tham khảo các mẫu hoa văn, phù điêu và tượng trang trí cho công trình của quý khách."
           size="compact"
           align="center"
         />
@@ -24,7 +24,7 @@ export function FeaturedProducts({ products = [] }) {
 
         <div className="section-actions section-actions--showcase" style={{ marginTop: "40px" }}>
           <Link className="button button--primary-gold-full" to="/san-pham" style={{ maxWidth: "320px", margin: "0 auto", textAlign: "center" }}>
-            ✨ Khám Phá Toàn Bộ Tác Phẩm →
+            Xem tất cả sản phẩm →
           </Link>
         </div>
       </div>

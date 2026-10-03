@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 export function HomeCta({ cta = {} }) {
   const notes = [
-    "Dựng mẫu 3D & tư vấn bố cục hoa văn theo bản vẽ kiến trúc",
+    "Tư vấn mẫu và bố cục hoa văn theo bản vẽ kiến trúc",
     "Đội ngũ nghệ nhân thi công trực tiếp tại công trình",
-    "Cam kết tiến độ & độ bền vật liệu dài lâu (Bê tông GFRC/Thạch cao)"
+    "Tư vấn vật liệu phù hợp với vị trí và điều kiện sử dụng"
   ];
 
   return (
@@ -12,9 +12,9 @@ export function HomeCta({ cta = {} }) {
       <div className="container">
         <div className="cta-panel-luxury">
           <div className="cta-panel-luxury__copy">
-            <span className="gold-eyebrow-chip">📞 Tư Vấn & Báo Giá Trực Tiếp</span>
-            <h2>{cta.title || "Cần Tư Vấn Phương Án Hoa Văn & Điêu Khắc Cho Công Trình?"}</h2>
-            <p>{cta.description || "Liên hệ ngay với xưởng Điêu Khắc Xuân Trường để nhận hồ sơ mẫu, tư vấn chất liệu và giải pháp tối ưu chi phí cho biệt thự, nhà ở hoặc công trình tâm linh của bạn."}</p>
+            <span className="gold-eyebrow-chip">📞 Tư vấn và báo giá</span>
+            <h2>{cta.title || "Quý khách cần tư vấn cho công trình?"}</h2>
+            <p>{cta.description || "Gửi mẫu tham khảo, bản vẽ hoặc kích thước hạng mục để xưởng tư vấn chất liệu, phương án thi công và báo giá."}</p>
           </div>
 
           <div className="cta-panel-luxury__notes">
@@ -41,10 +41,10 @@ export function HomeCta({ cta = {} }) {
               className="button button--ghost"
               style={{ borderColor: "#c59b27", color: "#e8d5a7" }}
             >
-              📞 Gọi Hotline Ngay
+              📞 Gọi tư vấn
             </a>
             <Link className="button button--ghost" to="/lien-he">
-              ✉️ Gửi Yêu Cầu Báo Giá
+              ✉️ Gửi yêu cầu báo giá
             </Link>
           </div>
         </div>

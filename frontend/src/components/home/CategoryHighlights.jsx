@@ -10,9 +10,9 @@ export function CategoryHighlights({ categories = [] }) {
     <section className="section category-highlights-section">
       <div className="container">
         <SectionTitle
-          eyebrow="Danh mục Mỹ thuật"
-          title="Nghệ thuật Tạo tác & Chế tác Kiến trúc"
-          description="Hệ thống danh mục sản phẩm điêu khắc nghệ thuật đa dạng, phục vụ biệt thự, nhà ở và các công trình điểm nhấn."
+          eyebrow="Danh mục sản phẩm"
+          title="Hoa văn, phù điêu và tượng trang trí"
+          description="Lựa chọn nhóm sản phẩm phù hợp với kiến trúc và nhu cầu trang trí của công trình."
           size="compact"
           align="center"
         />

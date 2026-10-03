@@ -29,7 +29,7 @@ export function ContactPage() {
       setForm(initialForm);
     },
     onError: () => {
-      setMessage("Không thể gửi liên hệ lúc này. Quý khách vui lòng thử lại hoặc gọi trực tiếp Hotline.");
+      setMessage("Không thể gửi liên hệ lúc này. Quý khách vui lòng thử lại hoặc gọi trực tiếp cho xưởng.");
     }
   });
 
@@ -53,7 +53,7 @@ export function ContactPage() {
             <span className="section-title__eyebrow">Thông tin liên hệ</span>
             <h2>Kết nối với xưởng điêu khắc</h2>
             <p className="contact-info-lead">
-              Quý khách có thể gửi mô tả công trình, kích thước bản vẽ hoặc danh sách hạng mục cần thực hiện để chúng tôi khảo sát và tư vấn chi tiết.
+              Quý khách có thể gửi mô tả công trình, kích thước, bản vẽ hoặc danh sách hạng mục cần thực hiện để chúng tôi khảo sát và tư vấn chi tiết.
             </p>
 
             <div className="contact-info-cards">
@@ -63,7 +63,7 @@ export function ContactPage() {
                   📞
                 </div>
                 <div className="contact-detail-item__content">
-                  <span className="contact-detail-item__label">Hotline tư vấn nhanh 24/7</span>
+                  <span className="contact-detail-item__label">Điện thoại tư vấn</span>
                   <strong className="contact-detail-item__value contact-detail-item__value--highlight">
                     {hotline}
                   </strong>
@@ -79,7 +79,7 @@ export function ContactPage() {
                   <div className="contact-detail-item__content">
                     <span className="contact-detail-item__label">Chat tư vấn qua Zalo</span>
                     <strong className="contact-detail-item__value">
-                      Bấm để nhắn tin Zalo ngay
+                      Nhắn tin qua Zalo
                     </strong>
                   </div>
                 </a>
@@ -116,7 +116,7 @@ export function ContactPage() {
           {/* Cột phải: Form gửi yêu cầu tư vấn */}
           <div className="contact-form-panel">
             <span className="section-title__eyebrow">Gửi yêu cầu</span>
-            <h2>Tư vấn & báo giá nhanh</h2>
+            <h2>Tư vấn và báo giá</h2>
             <p className="contact-form-lead">
               Điền thông tin hạng mục cần thi công bên dưới, xưởng sẽ phản hồi và gửi báo giá trong thời gian sớm nhất.
             </p>

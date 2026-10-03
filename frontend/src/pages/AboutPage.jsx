@@ -4,6 +4,7 @@ import { publicApi } from "../api/publicApi";
 import { AboutStoryCard } from "../components/about/AboutStoryCard";
 import { CapabilityGallery } from "../components/about/CapabilityGallery";
 import { ConstructionCapacity } from "../components/about/ConstructionCapacity";
+import { ThankYouSection } from "../components/about/ThankYouSection";
 import { ErrorState } from "../components/common/ErrorState";
 import { LoadingScreen } from "../components/common/LoadingScreen";
 import { Seo } from "../components/common/Seo";
@@ -41,7 +42,7 @@ export function AboutPage() {
           {/* Header gọn gàng, thanh lịch */}
           <div className="about-compact-header">
             <span className="about-compact-header__eyebrow">Giới thiệu xưởng</span>
-            <h1 className="about-compact-header__title">Công Ty Điêu Khắc Xuân Trường</h1>
+            <h1 className="about-compact-header__title">Công ty Điêu Khắc Xuân Trường</h1>
             <p className="about-compact-header__desc">
               Chế tác và thi công hoa văn kiến trúc, phù điêu, tượng nghệ thuật và cấu kiện bê tông mỹ thuật cao cấp.
             </p>
@@ -53,7 +54,7 @@ export function AboutPage() {
             <div className="about-overview-card">
               <div>
                 <span className="section-title__eyebrow">Tổng quan</span>
-                <h2>Nghệ thuật điêu khắc & Kỹ thuật khuôn đúc</h2>
+                <h2>Chế tác điêu khắc và thi công hoa văn</h2>
                 {rawContent ? (
                   <div
                     className="about-lead-text rich-content"
@@ -61,7 +62,7 @@ export function AboutPage() {
                   />
                 ) : (
                   <p className="about-lead-text">
-                    Chúng tôi kết hợp đội ngũ nghệ nhân điêu khắc giàu kinh nghiệm, kỹ sư khuôn đúc chính xác và đội ngũ thi công hiện trường chuyên nghiệp để tạo nên các tác phẩm điêu khắc, hoa văn kiến trúc tinh xảo và đồng bộ cho từng công trình.
+                    Xuân Trường chế tác hoa văn, phù điêu, tượng và cấu kiện trang trí kiến trúc, kết hợp sản xuất tại xưởng với lắp đặt tại công trình.
                   </p>
                 )}
               </div>
@@ -112,7 +113,7 @@ export function AboutPage() {
               <div className="about-section-heading">
                 <span className="section-title__eyebrow">Giá trị cốt lõi</span>
                 <h2>Điểm nhấn chất lượng chế tác</h2>
-                <p>Mỗi tác phẩm rời xưởng đều được đảm bảo về thẩm mỹ, tỷ lệ và độ bền vật liệu cao nhất.</p>
+                <p>Chúng tôi chú trọng đường nét, tỷ lệ và lựa chọn vật liệu phù hợp với từng hạng mục.</p>
               </div>
               <div className="about-values-grid">
                 {values.slice(0, 3).map((val, idx) => (
@@ -130,7 +131,7 @@ export function AboutPage() {
           {capabilities.length ? (
             <div className="about-capabilities-section">
               <div className="about-section-heading">
-                <span className="section-title__eyebrow">Quy trình & Năng lực</span>
+                <span className="section-title__eyebrow">Quy trình và năng lực</span>
                 <h2>Năng lực triển khai toàn diện</h2>
                 <p>Từ khâu phác thảo ý tưởng đến khi lắp dựng hoàn thiện trên công trường.</p>
               </div>
@@ -159,8 +160,8 @@ export function AboutPage() {
           <div className="container">
             <SectionTitle
               eyebrow="Bài viết giới thiệu"
-              title="Các bài viết về xưởng và quy trình"
-              description="Mở từng bài để xem nội dung chi tiết và ảnh thực tế rõ hơn."
+              title="Câu chuyện từ xưởng"
+              description="Tìm hiểu con người, công việc và các công đoạn chế tác tại Xuân Trường."
               size="compact"
             />
             <div className="about-story-grid">
@@ -171,6 +172,7 @@ export function AboutPage() {
           </div>
         </section>
       ) : null}
+      {import.meta.env.DEV && <ThankYouSection />}
     </>
   );
 }

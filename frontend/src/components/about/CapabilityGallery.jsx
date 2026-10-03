@@ -22,7 +22,7 @@ const groups = [
   },
   {
     id: "chi-tiet", title: "Chi tiết chế tác",
-    description: "Cận cảnh hoa lá, đường cuộn và phù điêu trong hồ sơ năng lực của xưởng.",
+    description: "Hoa văn hoa lá, đầu cột và phù điêu trang trí kiến trúc.",
     images: [photo("07-phu-dieu-hoa-la", "Phù điêu hoa lá trang trí"), photo("08-dau-cot-hoa-la", "Chi tiết đầu cột hoa lá"), photo("09-dau-cot-cuon", "Chi tiết đầu cột cuộn"), photo("14-rong-trang-tri", "Chi tiết rồng trang trí")]
   },
   {
@@ -52,10 +52,10 @@ export function CapabilityGallery({ compact = false }) {
         <div className="capability-gallery__heading">
           <div>
             <span className="section-title__eyebrow">Dấu ấn Xuân Trường</span>
-            <h2>{compact ? "Năng lực qua những hình ảnh thực tế" : "Từ xưởng chế tác đến không gian kiến trúc"}</h2>
-            <p>Hình ảnh tuyển chọn từ hồ sơ năng lực của Điêu Khắc Xuân Trường.</p>
+            <h2>{compact ? "Xưởng chế tác và công trình" : "Từ xưởng chế tác đến không gian kiến trúc"}</h2>
+            <p>Khám phá xưởng chế tác, các chi tiết điêu khắc và công trình của Xuân Trường.</p>
           </div>
-          {compact && <Link className="button button--ghost" to="/gioi-thieu#hinh-anh-nang-luc">Khám phá năng lực →</Link>}
+          {compact && <Link className="button button--ghost" to="/gioi-thieu#hinh-anh-nang-luc">Tìm hiểu về xưởng →</Link>}
         </div>
         {compact ? (
           <div className="capability-gallery__previews">
@@ -84,7 +84,7 @@ export function CapabilityGallery({ compact = false }) {
                 </button>
               ))}
             </div>
-            <p className="capability-gallery__hint">Chạm vào ảnh để xem trọn hình và phóng to chi tiết.</p>
+            <p className="capability-gallery__hint">Chạm vào ảnh để phóng to.</p>
             <ImageLightbox images={group.images} activeIndex={activeIndex ?? 0} open={activeIndex !== null} onClose={() => setActiveIndex(null)} onSelect={setActiveIndex} title={group.title} />
           </>
         )}

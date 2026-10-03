@@ -282,7 +282,7 @@ export function ProductsPage() {
               </div>
               <div className="catalog-active-filter-actions">
                 <span className="active-filter-count">
-                  Hiển thị <strong>{displayProducts.length}</strong> tác phẩm
+                  Hiển thị <strong>{displayProducts.length}</strong> sản phẩm
                 </span>
                 <button
                   type="button"
@@ -309,7 +309,7 @@ export function ProductsPage() {
           <div className="catalog-full-content">
             {productsQuery.isFetching && !productsQuery.isFetchingNextPage ? (
               <p className="list-status" aria-live="polite">
-                Đang cập nhật danh sách tác phẩm...
+                Đang cập nhật danh sách sản phẩm...
               </p>
             ) : null}
 
@@ -366,8 +366,8 @@ export function ProductsPage() {
             ) : (
               <div className="catalog-empty-block">
                 <EmptyState
-                  title="Không tìm thấy tác phẩm phù hợp"
-                  message="Không có mẫu nào khớp với bộ lọc hoặc kích thước đã chọn. Quý khách có thể bấm nút bên dưới để xem toàn bộ tác phẩm của xưởng."
+                  title="Không tìm thấy sản phẩm phù hợp"
+                  message="Không có mẫu nào khớp với bộ lọc hoặc kích thước đã chọn. Quý khách có thể bấm nút bên dưới để xem toàn bộ sản phẩm của xưởng."
                 />
                 <div style={{ textAlign: "center", marginTop: "16px" }}>
                   <button
@@ -397,11 +397,11 @@ export function ProductsPage() {
                     >
                       {productsQuery.isFetchingNextPage
                         ? "Đang tải..."
-                        : "Tải thêm tác phẩm"}
+                        : "Tải thêm sản phẩm"}
                     </button>
                   </>
                 ) : (
-                  <p className="catalog-end">Đã hiển thị toàn bộ tác phẩm.</p>
+                  <p className="catalog-end">Đã hiển thị toàn bộ sản phẩm.</p>
                 )}
               </div>
             ) : null}
@@ -416,7 +416,7 @@ export function ProductsPage() {
               type="button"
               className={`floating-btn catalog-filter-fab ${hasActiveFilter ? "is-filtered" : ""}`}
               onClick={() => setFilterModalOpen(true)}
-              title="Lọc danh mục & tìm kiếm tác phẩm (Ctrl + K)"
+              title="Lọc danh mục & tìm kiếm sản phẩm (Ctrl + K)"
               aria-label="Mở bộ lọc danh mục và tìm kiếm"
             >
               <span className="floating-btn__icon catalog-filter-fab__icon">
@@ -436,7 +436,7 @@ export function ProductsPage() {
               </span>
               <span className="floating-btn__label">
                 <small>TÌM KIẾM & LỌC</small>
-                <strong>Bộ Lọc Tác Phẩm</strong>
+                <strong>Bộ lọc sản phẩm</strong>
               </span>
               {hasActiveFilter ? (
                 <span
@@ -457,7 +457,7 @@ export function ProductsPage() {
           className="catalog-modal-root"
           role="dialog"
           aria-modal="true"
-          aria-label="Bộ lọc và tìm kiếm tác phẩm"
+          aria-label="Bộ lọc và tìm kiếm sản phẩm"
         >
           <div
             className="catalog-modal__backdrop"
@@ -525,7 +525,7 @@ export function ProductsPage() {
                 {searchInput ? (
                   <div className="modal-live-match-indicator">
                     <span className="modal-live-match-text">
-                      🔍 Tìm thấy <strong>{displayProducts.length}</strong> tác phẩm phù hợp
+                      🔍 Tìm thấy <strong>{displayProducts.length}</strong> sản phẩm phù hợp
                     </span>
                   </div>
                 ) : null}
@@ -568,7 +568,7 @@ export function ProductsPage() {
               {/* Section 2: Categories 2-Column Grid */}
               <div className="catalog-modal__section">
                 <div className="modal-section-head">
-                  <span className="modal-section-label">🏛️ Phân loại danh mục kiến trúc</span>
+                  <span className="modal-section-label">🏛️ Danh mục sản phẩm</span>
                   {filters.categoryId ? (
                     <button
                       type="button"
@@ -644,7 +644,7 @@ export function ProductsPage() {
                 </button>
               ) : (
                 <span className="modal-footer__status">
-                  Đang hiển thị {displayProducts.length} tác phẩm
+                  Đang hiển thị {displayProducts.length} sản phẩm
                 </span>
               )}
 
@@ -653,7 +653,7 @@ export function ProductsPage() {
                 className="modal-footer__apply-btn"
                 onClick={() => setFilterModalOpen(false)}
               >
-                Áp dụng & Xem ({displayProducts.length} tác phẩm) →
+                Xem kết quả ({displayProducts.length} sản phẩm) →
               </button>
             </div>
           </div>

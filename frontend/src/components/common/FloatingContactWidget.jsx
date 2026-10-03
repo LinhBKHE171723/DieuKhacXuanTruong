@@ -45,7 +45,6 @@ export function FloatingContactWidget({ settings = {} }) {
         aria-label={`Gọi tư vấn: ${formattedPhone}`}
       >
         <span className="floating-btn__icon">📞</span>
-        <span className="floating-btn__mobile-label">Gọi ngay</span>
         <span className="floating-btn__label">
           <small>TƯ VẤN MIỄN PHÍ</small>
           <strong>{formattedPhone}</strong>
@@ -58,14 +57,13 @@ export function FloatingContactWidget({ settings = {} }) {
         target="_blank"
         rel="noreferrer"
         className="floating-btn floating-btn--zalo"
-        title="Chat Zalo hỗ trợ tức thì"
+        title="Nhắn tin tư vấn qua Zalo"
         aria-label="Chat tư vấn qua Zalo"
       >
         <span className="floating-btn__icon">💬</span>
-        <span className="floating-btn__mobile-label">Zalo</span>
         <span className="floating-btn__label">
           <small>CHAT TƯ VẤN</small>
-          <strong>Nhanh Qua Zalo</strong>
+          <strong>Nhắn tin qua Zalo</strong>
         </span>
       </a>
     </aside>

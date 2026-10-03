@@ -75,7 +75,7 @@ export function AboutStoryPage() {
             <SectionTitle
               eyebrow="Đọc thêm"
               title="Các bài viết liên quan"
-              description="Mở thêm một bài viết khác để xem tiếp hình ảnh và nội dung chi tiết."
+              description="Tìm hiểu thêm về hoạt động chế tác và thi công của Xuân Trường."
               size="compact"
             />
             <div className="about-story-grid">

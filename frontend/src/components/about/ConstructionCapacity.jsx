@@ -16,7 +16,7 @@ export function ConstructionCapacity() {
       <div className="container">
         <div className="construction-capacity__heading">
           <div><span className="section-title__eyebrow">Con người & tay nghề</span><h2 id="construction-title">Năng lực thi công</h2></div>
-          <p>Từ chế tác mẫu tại xưởng, chuẩn bị cấu kiện đến lắp đặt và căn chỉnh tại công trình. Hình ảnh đội ngũ làm việc được tuyển chọn từ hồ sơ năng lực Xuân Trường.</p>
+          <p>Đội ngũ Xuân Trường thực hiện các công đoạn chế tác mẫu, chuẩn bị cấu kiện, lắp đặt và hoàn thiện hoa văn tại công trình.</p>
         </div>
         <div className="construction-capacity__grid">
           {images.map((image, index) => (

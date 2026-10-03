@@ -19,9 +19,9 @@ export function SeniorHeroSearchWidget({ categories = [] }) {
       <div className="container">
         <div className="senior-search-card">
           <div className="senior-search-card__head">
-            <span className="senior-search-badge">🔍 DỄ DÀNG TÌM KIẾM</span>
-            <h2>Tìm Kiếm Mẫu Hoa Văn, Phù Điêu & Tượng Theo Yêu Cầu</h2>
-            <p>Nhập tên mẫu sản phẩm hoặc chọn danh mục bên dưới để xem ảnh sản phẩm chi tiết nhất.</p>
+            <span className="senior-search-badge">🔍 TÌM SẢN PHẨM</span>
+            <h2>Tìm mẫu hoa văn, phù điêu và tượng</h2>
+            <p>Nhập tên sản phẩm hoặc chọn danh mục để tìm mẫu phù hợp.</p>
           </div>
 
           <form className="senior-search-form" onSubmit={handleSearch}>
@@ -60,7 +60,7 @@ export function SeniorHeroSearchWidget({ categories = [] }) {
                     type="button"
                     className="senior-clear-btn"
                     onClick={() => setSearchTerm("")}
-                    title="Xóa chữ"
+                    title="Xóa từ khóa"
                   >
                     ✕
                   </button>

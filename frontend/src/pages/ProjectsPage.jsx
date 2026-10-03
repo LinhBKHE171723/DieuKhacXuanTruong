@@ -25,7 +25,7 @@ export function ProjectsPage() {
   return (
     <>
       <Seo
-        title="Công trình và dự án đã hoàn thiện"
+        title="Công trình và dự án"
         description="Tổng hợp các công trình điêu khắc, hoa văn kiến trúc và bê tông mỹ thuật đã thi công."
       />
       <section className="section projects-page-section">
@@ -33,7 +33,7 @@ export function ProjectsPage() {
           {/* Header gọn gàng, tinh tế, vừa vặn tầm mắt */}
           <div className="projects-compact-header">
             <span className="projects-compact-header__eyebrow">Công trình</span>
-            <h1 className="projects-compact-header__title">Công trình đã hoàn thiện</h1>
+            <h1 className="projects-compact-header__title">Công trình của Xuân Trường</h1>
             <p className="projects-compact-header__desc">
               Hình ảnh thực tế và phạm vi triển khai của từng dự án.
             </p>
@@ -49,7 +49,7 @@ export function ProjectsPage() {
           ) : (
             <EmptyState
               title="Đang cập nhật công trình"
-              message="Các dự án và công trình hoàn thiện tiêu biểu sẽ sớm được cập nhật."
+              message="Thông tin công trình đang được cập nhật. Quý khách có thể liên hệ để được tư vấn hạng mục tương tự."
             />
           )}
         </div>

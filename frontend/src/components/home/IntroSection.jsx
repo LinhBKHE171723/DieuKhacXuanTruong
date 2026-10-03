@@ -6,8 +6,8 @@ export function IntroSection({ sections = {} }) {
     .filter((item) => item?.label || item?.value)
     .slice(0, 3);
 
-  const badge = sections.introBadge || "Nghệ thuật Tạo tác & Chế tác Kiến trúc";
-  const title = sections.introTitle || "Điêu Khắc Xuân Trường - Tôn Vinh Tinh Hoa Mỹ Thuật & Kiến Trúc";
+  const badge = sections.introBadge || "Chế tác và thi công";
+  const title = sections.introTitle || "Điêu Khắc Xuân Trường";
   const description = sections.introDescription || "Chúng tôi chuyên chế tác các tác phẩm điêu khắc gỗ, đá, thạch cao, phù điêu nghệ thuật, linh vật và cấu kiện bê tông đúc sẵn GFRC cho biệt thự, nhà ở và các công trình tâm linh cao cấp.";
 
   return (
@@ -24,15 +24,15 @@ export function IntroSection({ sections = {} }) {
                 <div className="highlight-pill">
                   <span className="icon">🏛️</span>
                   <div>
-                    <strong>Tân Cổ Điển & Cổ Truyền</strong>
+                    <strong>Tân cổ điển và truyền thống</strong>
                     <small>Đúng tỷ lệ & phong cách kiến trúc</small>
                   </div>
                 </div>
                 <div className="highlight-pill">
                   <span className="icon">🎨</span>
                   <div>
-                    <strong>Nghệ Nhân Tay Nghề Cao</strong>
-                    <small>Đường nét chạm khắc sắc nét</small>
+                    <strong>Tay nghề chế tác</strong>
+                    <small>Chú trọng từng đường nét</small>
                   </div>
                 </div>
               </div>

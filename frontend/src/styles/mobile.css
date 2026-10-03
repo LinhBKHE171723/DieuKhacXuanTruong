@@ -1,16 +1,13 @@
 /* Loaded after global styles: customer-facing layouts for small touch screens. */
-.floating-btn__mobile-label { display: none; }
 .product-card__image-link:focus-visible,
 .product-card__title-link:focus-visible { outline: 3px solid var(--gold-strong); outline-offset: -3px; }
 .product-card > .product-card__image-link { height: auto; flex-shrink: 0; }
 
 @media (max-width: 768px) {
-  html { scroll-padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
   .container, .container--wide {
     width: calc(100% - 28px);
     padding-inline: 0 !important;
   }
-  .app-shell { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
   .section { padding-block: 40px; }
   .site-header__main { gap: 8px; padding-block: 10px; }
   .site-logo { min-width: 0; flex: 1; gap: 8px; }
@@ -47,26 +44,7 @@
   .product-card-list-item { grid-template-columns: minmax(0, 1fr); }
   .product-card-list-thumb { width: 100%; }
 
-  /* Reserved space below the footer keeps the contact bar off the last links. */
-  .senior-floating-contact {
-    inset: auto 0 0;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
-    background: #fffdf8;
-    border-top: 1px solid var(--line);
-    box-shadow: 0 -4px 18px #2d241812;
-  }
-  .senior-floating-contact .floating-btn { flex-shrink: 0; height: 48px; box-shadow: none; }
-  .senior-floating-contact .floating-btn--phone,
-  .senior-floating-contact .floating-btn--zalo {
-    flex: 1; width: auto; gap: 6px; border-radius: 12px !important;
-  }
-  .floating-btn__mobile-label { display: inline; font-size: .85rem; font-weight: 700; }
   .floating-page-slot:empty { display: none; }
-  .site-footer__bottom-inner { padding-bottom: 24px; }
   .site-footer__bottom-links { flex-wrap: wrap; }
   .site-footer__bottom-links a, .footer-links a { display: inline-flex; align-items: center; min-height: 44px; }
   .image-lightbox__dialog { height: 96dvh !important; max-height: 96dvh !important; }
@@ -75,9 +53,9 @@
 }
 
 @media (max-width: 480px) {
-  .card-grid--full-width { grid-template-columns: minmax(0, 1fr) !important; gap: 18px !important; }
-  .product-card__body { padding: 14px !important; }
-  .product-card__body h3 { font-size: 1.05rem !important; }
+  .card-grid--full-width { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+  .product-card__body { padding: 10px !important; }
+  .product-card__body h3 { font-size: .9rem !important; overflow-wrap: anywhere; }
   .legal-profile__documents { grid-template-columns: minmax(0, 1fr); }
   .capability-gallery__previews { grid-template-columns: minmax(0, 1fr); }
   .capability-gallery__preview img { height: auto; aspect-ratio: 4 / 3; }
