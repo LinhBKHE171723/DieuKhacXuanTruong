@@ -11,6 +11,7 @@ import { HomeCta } from "../components/home/HomeCta";
 import { IntroSection } from "../components/home/IntroSection";
 import { SeniorHeroSearchWidget } from "../components/home/SeniorHeroSearchWidget";
 import { WhyChooseUs } from "../components/home/WhyChooseUs";
+import { CapabilityGallery } from "../components/about/CapabilityGallery";
 
 export function HomePage() {
   const { data, isLoading, isError } = useQuery({
@@ -35,6 +36,7 @@ export function HomePage() {
       <HeroSlider banners={data.banners} />
       <SeniorHeroSearchWidget categories={data.featuredCategories} />
       <IntroSection sections={data.homepage?.sections} />
+      <CapabilityGallery compact />
       <CategoryHighlights categories={data.featuredCategories} />
       <FeaturedProducts products={data.featuredProducts} />
       <WhyChooseUs sections={data.homepage?.sections} />

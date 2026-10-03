@@ -1,0 +1,50 @@
+.capability-gallery {
+  padding: 64px 0;
+  background: #eee7dc;
+  scroll-margin-top: calc(var(--header-offset, 100px) + 24px);
+}
+.capability-gallery__heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+.capability-gallery__heading h2 { max-width: 760px; font-size: clamp(1.7rem, 3vw, 2.6rem); line-height: 1.2; margin: 12px 0; }
+.capability-gallery__heading p, .capability-gallery__description, .capability-gallery__hint { color: #655a4c; line-height: 1.6; }
+.capability-gallery__heading .button { flex-shrink: 0; }
+.capability-gallery__filters { display: flex; flex-wrap: wrap; gap: 10px; }
+.capability-gallery__filters button { display: inline-flex; align-items: center; gap: 10px; border: 1px solid #d5c6ad; background: #faf7f0; color: #483b28; border-radius: 999px; padding: 12px 18px; min-height: 44px; cursor: pointer; font: inherit; }
+.capability-gallery__filters button[aria-pressed="true"] { background: #35291c; color: #fff6e5; border-color: #35291c; }
+.capability-gallery__filters button span { font-size: .8rem; opacity: .7; }
+.capability-gallery__description { margin: 22px 0; }
+.capability-gallery__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.capability-gallery__photo { display: flex; flex-direction: column; min-width: 0; border: 1px solid #ddd0bd; border-radius: 18px; padding: 0; overflow: hidden; background: #faf7f0; color: #342819; text-align: left; font: inherit; cursor: zoom-in; }
+.capability-gallery__frame { display: block; position: relative; width: 100%; aspect-ratio: 6 / 5; overflow: hidden; background: #e6ded2; }
+.capability-gallery__frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.capability-gallery__grid--chi-tiet, .capability-gallery__grid--canh-quan { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.capability-gallery__grid--canh-quan { max-width: 850px; margin-inline: auto; }
+.capability-gallery__photo--portrait .capability-gallery__frame { aspect-ratio: 2 / 5; }
+.capability-gallery__grid--xuong { grid-template-columns: 1fr 1fr; }
+.capability-gallery__grid--xuong .capability-gallery__photo:first-child { grid-row: span 2; }
+.capability-gallery__grid--xuong .capability-gallery__photo:first-child .capability-gallery__frame { flex: 1; aspect-ratio: auto; min-height: 300px; }
+.capability-gallery__grid--xuong .capability-gallery__photo:not(:first-child) .capability-gallery__frame { aspect-ratio: 2.8 / 1; }
+.capability-gallery__caption { display: flex; justify-content: space-between; gap: 12px; padding: 16px; line-height: 1.5; }
+.capability-gallery__caption > span { color: #98722b; }
+.capability-gallery__hint { margin: 24px 0 0; font-size: .9rem; }
+.capability-gallery__previews { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.capability-gallery__preview { min-width: 0; overflow: hidden; border-radius: 16px; background: #fffaf1; border: 1px solid #ddd0bd; }
+.capability-gallery__preview img { width: 100%; height: 230px; object-fit: cover; background: #e6ded2; }
+.capability-gallery__preview > span { display: flex; justify-content: space-between; padding: 18px 14px; font-weight: 600; color: #42321d; }
+.capability-gallery button:focus-visible, .capability-gallery a:focus-visible { outline: 3px solid #926c23; outline-offset: 4px; }
+@media (max-width: 1024px) {
+  .capability-gallery__heading { align-items: start; flex-direction: column; }
+  .capability-gallery__grid, .capability-gallery__previews { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 576px) {
+  .capability-gallery { padding: 40px 0; }
+  .capability-gallery__grid { grid-template-columns: 1fr; gap: 16px; }
+  .capability-gallery__grid--canh-quan { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .capability-gallery__grid--canh-quan .capability-gallery__caption { padding: 12px; font-size: .85rem; }
+  .capability-gallery__grid--xuong .capability-gallery__photo:first-child { grid-row: auto; }
+  .capability-gallery__grid--xuong .capability-gallery__photo:first-child .capability-gallery__frame { aspect-ratio: 1; min-height: 0; flex: auto; }
+  .capability-gallery__previews { gap: 12px; }
+  .capability-gallery__preview img { height: 170px; }
+  .capability-gallery__preview > span { font-size: .85rem; padding: 12px; }
+  .capability-gallery__filters { gap: 8px; }
+  .capability-gallery__filters button { padding: 10px 12px; font-size: .85rem; }
+}

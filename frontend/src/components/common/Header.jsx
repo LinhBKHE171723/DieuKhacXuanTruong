@@ -62,7 +62,7 @@ export function Header({ settings = {} }) {
           </span>
         </Link>
 
-        <nav className={`site-nav ${open ? "is-open" : ""}`}>
+        <nav id="site-navigation" className={`site-nav ${open ? "is-open" : ""}`}>
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -103,6 +103,8 @@ export function Header({ settings = {} }) {
             className="mobile-toggle"
             type="button"
             aria-label={open ? "Đóng menu điều hướng" : "Mở menu điều hướng"}
+            aria-expanded={open}
+            aria-controls="site-navigation"
             onClick={() => setOpen((value) => !value)}
           >
             <span />

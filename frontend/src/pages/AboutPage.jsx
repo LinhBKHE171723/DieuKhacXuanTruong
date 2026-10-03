@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { publicApi } from "../api/publicApi";
 import { AboutStoryCard } from "../components/about/AboutStoryCard";
+import { CapabilityGallery } from "../components/about/CapabilityGallery";
+import { ConstructionCapacity } from "../components/about/ConstructionCapacity";
 import { ErrorState } from "../components/common/ErrorState";
 import { LoadingScreen } from "../components/common/LoadingScreen";
 import { Seo } from "../components/common/Seo";
@@ -147,6 +149,9 @@ export function AboutPage() {
           ) : null}
         </div>
       </section>
+
+      <CapabilityGallery />
+      <ConstructionCapacity />
 
       {/* Bài viết câu chuyện xưởng */}
       {stories.length ? (

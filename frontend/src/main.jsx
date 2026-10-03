@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import App from "./App";
 import "./styles/global.css";
+import "./styles/mobile.css";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";

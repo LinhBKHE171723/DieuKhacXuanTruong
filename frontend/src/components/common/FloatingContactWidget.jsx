@@ -42,8 +42,10 @@ export function FloatingContactWidget({ settings = {} }) {
         href={`tel:${phone}`}
         className="floating-btn floating-btn--phone"
         title={`Gọi điện tư vấn trực tiếp: ${formattedPhone}`}
+        aria-label={`Gọi tư vấn: ${formattedPhone}`}
       >
         <span className="floating-btn__icon">📞</span>
+        <span className="floating-btn__mobile-label">Gọi ngay</span>
         <span className="floating-btn__label">
           <small>TƯ VẤN MIỄN PHÍ</small>
           <strong>{formattedPhone}</strong>
@@ -57,8 +59,10 @@ export function FloatingContactWidget({ settings = {} }) {
         rel="noreferrer"
         className="floating-btn floating-btn--zalo"
         title="Chat Zalo hỗ trợ tức thì"
+        aria-label="Chat tư vấn qua Zalo"
       >
         <span className="floating-btn__icon">💬</span>
+        <span className="floating-btn__mobile-label">Zalo</span>
         <span className="floating-btn__label">
           <small>CHAT TƯ VẤN</small>
           <strong>Nhanh Qua Zalo</strong>
